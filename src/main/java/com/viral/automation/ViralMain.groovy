@@ -11,7 +11,7 @@ class ViralMain {
         def loginWindow = ViralLogin.launch(email, password)
         def marketIntelligenceWindow = ViralMarketIntelligence.launch(searchTerm)
 
-        sleep(20_000)
+        // do stuff
 
         loginWindow.quit()
         marketIntelligenceWindow.quit()
