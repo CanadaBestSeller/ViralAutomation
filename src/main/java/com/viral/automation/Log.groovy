@@ -7,7 +7,7 @@ class Log {
     private static ERROR_TAG = '[ERROR] '
     private static SUCCESS_TAG = '[SUCCESS] '
 
-    private static SEPARATOR = "\n\n\n\n"
+    private static SEPARATOR = "\n\n"
 
     static void info(String log) {println APPLICATION_TAG + INFO_TAG + log}
     static void warn(String log) {println APPLICATION_TAG + WARN_TAG + log}

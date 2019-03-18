@@ -1,11 +1,20 @@
-// You must install ChromeDriver locally!
-// brew install chromedriver
-// move driver to '/usr/local/bin/chromedriver'
-
-// Dependencies need to be declared here, as well as in the POM file.
-// By doing so, you will be able to execute this file via either bash or IntelliJ
-// Bash command:
-// groovy --classpath "./src/main/java" MarketIntelligence.groovy 'SEARCH TERM'
+/**
+ * You must install ChromeDriver locally!
+ * brew install chromedriver
+ * move driver to '/usr/local/bin/chromedriver'
+ *
+ * Bash command:
+ * groovy --classpath "./src/main/java" MarketIntelligence.groovy '<search-term-in-quotes>'
+ *
+ * Intellij target (with debugging capabilities):
+ * Target's Main class: com.viral.automation.ViralMain
+ * Target's Working directory: (root of git folder, e.g. /Users/lidavid/workspace/ViralAutomation
+ * Target's Program arguments: <viral-launch-email> <viral-launch-password> "<search-term-in-quotes>"
+ *
+ * *** IMPORTANT ***
+ * Dependencies need to be declared here, as well as in the POM file.
+ * By doing so, you will be able to execute this file via either bash or IntelliJ.
+ */
 @Grapes([
         @Grab("org.gebish:geb-core:2.3.1"),
         @Grab("org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"),
