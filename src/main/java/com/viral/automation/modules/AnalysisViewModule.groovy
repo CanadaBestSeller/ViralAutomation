@@ -6,7 +6,7 @@ import geb.Module
 class AnalysisViewModule extends Module {
 
     static content = {
-        marketTrendsTab { $("div#tab-vlAnalysis") }
+        analysisViewTab { $("div#tab-vlAnalysis") }
 
         productIdeaScore { $(".stats-row.el-row", 7).$("p", 0) }
         possibleMonthlySales { $(".stats-row.el-row", 7).$("p", 1) }
@@ -15,7 +15,8 @@ class AnalysisViewModule extends Module {
     }
 
     void open() {
-        marketTrendsTab.click()
+        analysisViewTab.click()
+        Log.info("Clicked VL Analysis tab.")
         waitFor(2) { loaded }
         Log.success("Opened Viral Launch Analysis.")
     }

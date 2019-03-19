@@ -30,17 +30,18 @@ import static groovy.json.JsonOutput.*
  */
 class ViralMarketIntelligence {
 
-    public static final int PAGE_LOAD_TIMEOUT_IN_SECONDS = 20
+    public static final int PAGE_LOAD_TIMEOUT_IN_SECONDS = 30
 
-    static Browser launch(String searchTerm) {
-
-        def marketIntelligenceResult = [:]
+    static Browser searchAndRecord(searchTerm, marketIntelligenceResults) {
 
         def requestParams = [marketplace: "US", search: searchTerm]
         Log.info "Analyzing with $requestParams..."
 
-        def window = ChromeBrowserProvider.get()
-        window.drive {
+        // Populate this map with final results
+        def marketIntelligenceResult = [:]
+
+        def browser = ChromeBrowserProvider.get()
+        browser.drive {
 
             to(requestParams, ViralMarketIntelligencePage)
 
@@ -59,13 +60,16 @@ class ViralMarketIntelligence {
             analysisView.open() // Due to AJAX, we must click to open the window to populate the data
             analysisView.transcribe(marketIntelligenceResult)
 
-            println prettyPrint(toJson(marketIntelligenceResult))
+            if (estimatedSearchVolume) { // Do this last. Takes time to load. Sometimes the search volume isn't provided
+                marketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
+            }
 
-            sleep(10000)
+            Log.success("Analyzed!\n" + prettyPrint(toJson(marketIntelligenceResult)))
+
+            marketIntelligenceResults[searchTerm] = marketIntelligenceResult
         }
 
-        Log.success "Analyzed!"
-        return window
+        return browser
     }
 
 }
@@ -76,6 +80,7 @@ class ViralMarketIntelligencePage extends Page {
     static content = {
         header { $("h3.search-phrase", 0) }
         spinner { $("div.el-loading-mask", 0) }
+        estimatedSearchVolume { $("div.search-volume", 0).$("a", 0) }
 
         stanardView { module StandardViewModule }
         detailedView { module DetailedViewModule }

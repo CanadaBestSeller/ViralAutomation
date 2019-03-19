@@ -1,7 +1,6 @@
 package com.viral.automation.modules
 
 import com.viral.automation.Log
-import com.viral.automation.ViralMarketIntelligenceModel
 import geb.Module
 
 class DetailedViewModule extends Module {
@@ -35,6 +34,7 @@ class DetailedViewModule extends Module {
 
         waitFor(2) { detailedStatisticsSubTab.displayed }
         detailedStatisticsSubTab.click()
+        Log.info("Clicked Detailed Statistics sub-tab.")
 
         waitFor(10) { loaded }
         Log.success("Opened Detailed Statistics.")

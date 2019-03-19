@@ -1,5 +1,10 @@
 package com.viral.automation
 
+import geb.Browser
+
+import static groovy.json.JsonOutput.prettyPrint
+import static groovy.json.JsonOutput.toJson
+
 class ViralMain {
 
     static void main(String... args) {
@@ -8,13 +13,17 @@ class ViralMain {
         final String password = args[1]
         final String searchTerm = args[2]
 
-        def loginWindow = ViralLogin.launch(email, password)
-        def marketIntelligenceWindow = ViralMarketIntelligence.launch(searchTerm)
+        def marketIntelligenceResults = [:]
 
-        // do stuff
+        List<Browser> browsers = new ArrayList<>()
 
-        loginWindow.quit()
-        marketIntelligenceWindow.quit()
+        browsers.add ViralLogin.launch(email, password)
+        browsers.add ViralMarketIntelligence.searchAndRecord("black glue", marketIntelligenceResults)
+        browsers.add ViralMarketIntelligence.searchAndRecord("yellow glue", marketIntelligenceResults)
+
+        browsers.each { it.quit() }
+
+        println prettyPrint(toJson(marketIntelligenceResults))
     }
 }
 
