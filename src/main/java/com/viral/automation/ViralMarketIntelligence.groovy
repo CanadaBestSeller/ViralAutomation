@@ -8,6 +8,8 @@ import com.viral.automation.modules.StandardViewModule
 import geb.Browser
 import geb.Page
 
+import static groovy.json.JsonOutput.*
+
 /**
  * This class essentially scrapes 2 components of the market intelligence page:
  *
@@ -31,28 +33,55 @@ class ViralMarketIntelligence {
     public static final int PAGE_LOAD_TIMEOUT_IN_SECONDS = 20
 
     static Browser launch(String searchTerm) {
-        def requestParams = [marketplace:"US", search:searchTerm]
+
+        def marketIntelligenceResult = [:]
+
+        def requestParams = [marketplace: "US", search: searchTerm]
         Log.info "Analyzing with $requestParams..."
 
         def window = ChromeBrowserProvider.get()
         window.drive {
+
             to(requestParams, ViralMarketIntelligencePage)
 
-            waitFor { header.displayed }
+            waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { header.displayed }
             Log.info "Market intelligence page started loading..."
 
             waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !spinner.displayed }
             Log.success "Market intelligence page fully loaded."
 
-            detailedView.openTopSellersTab() // Due to AJAX, we must click to open the window to populate the data
+            detailedView.open() // Due to AJAX, we must click to open the window to populate the data
+            detailedView.transcribe(marketIntelligenceResult)
 
-            Log.success "detailedView.top10AverageSales = " + detailedView.top10AverageSales
+            marketTrendsView.open() // Due to AJAX, we must click to open the window to populate the data
+            marketTrendsView.transcribe(marketIntelligenceResult)
+
+            analysisView.open() // Due to AJAX, we must click to open the window to populate the data
+            analysisView.transcribe(marketIntelligenceResult)
+
+            println prettyPrint(toJson(marketIntelligenceResult))
 
             sleep(10000)
         }
 
         Log.success "Analyzed!"
         return window
+    }
+
+}
+
+class ViralMarketIntelligencePage extends Page {
+    static url = "https://viral-launch.com/sellers/launch-staging/pages/market-intelligence.html"
+
+    static content = {
+        header { $("h3.search-phrase", 0) }
+        spinner { $("div.el-loading-mask", 0) }
+
+        stanardView { module StandardViewModule }
+        detailedView { module DetailedViewModule }
+        marketTrendsView { module MarketTrendsModule }
+        analysisView { module AnalysisViewModule }
+        costCalculatorView { module CostCalculatorViewModule }
     }
 }
 
