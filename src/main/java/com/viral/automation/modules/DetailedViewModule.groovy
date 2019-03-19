@@ -25,10 +25,11 @@ class DetailedViewModule extends Module {
     void openTopSellersTab() {
         topSellersTab.click()
         Log.info("Clicked Top Sellers tab.")
-    }
 
-    void isLoaded() {
-        $("div#tab-1", 0).displayed
+        waitFor(2) { detailedStatisticsSubTab.displayed }
+
+        detailedStatisticsSubTab.click()
+        Log.success("Opened Detailed Statistics.")
     }
 
     boolean isDetailedStatisticsSubTabLoaded() {
@@ -37,10 +38,5 @@ class DetailedViewModule extends Module {
         boolean loaded4 = $(".stats-row.el-row", 4).find("h5")*.text() == ["AVERAGE\nSALES", "AVERAGE\nREVENUE", "AVERAGE\nPRICE"]
         boolean loaded5 = $(".stats-row.el-row", 5).find("h5")*.text() == ["AVERAGE REVIEW\nCOUNT", "AVERAGE REVIEW\nRATING"]
         return loaded2 && loaded3 && loaded4 && loaded5
-    }
-
-    void openDetailedStatisticsSubTab() {
-        detailedStatisticsSubTab.click()
-        Log.info("Clicked Detailed Statistics tab.")
     }
 }

@@ -37,21 +37,18 @@ class ViralMarketIntelligence {
         def window = ChromeBrowserProvider.get()
         window.drive {
             to(requestParams, ViralMarketIntelligencePage)
-            waitFor { $("h3.search-phrase", 0).displayed }
+
+            waitFor { header.displayed }
             Log.info "Market intelligence page started loading..."
 
-            waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !$("div.el-loading-mask", 0).displayed }
+            waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !spinner.displayed }
             Log.success "Market intelligence page fully loaded."
 
-            detailedView.openTopSellersTab()
+            detailedView.openTopSellersTab() // Due to AJAX, we must click to open the window to populate the data
 
-            waitFor(2) { $("div#tab-1", 0).displayed }
-            detailedView.openDetailedStatisticsSubTab()
+            Log.success "detailedView.top10AverageSales = " + detailedView.top10AverageSales
 
             sleep(10000)
-
-            Log.success("Opened Detailed Statistics.")
-            Log.success "detailedView.top10AverageSales = " + detailedView.top10AverageSales
         }
 
         Log.success "Analyzed!"

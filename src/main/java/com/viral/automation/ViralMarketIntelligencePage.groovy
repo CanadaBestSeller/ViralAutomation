@@ -11,6 +11,9 @@ class ViralMarketIntelligencePage extends Page {
     static url = "https://viral-launch.com/sellers/launch-staging/pages/market-intelligence.html"
 
     static content = {
+        header { $("h3.search-phrase", 0) }
+        spinner { $("div.el-loading-mask", 0) }
+
         stanardView { module StandardViewModule }
         detailedView { module DetailedViewModule }
         marketTrendsView { module MarketTrendsModule }
