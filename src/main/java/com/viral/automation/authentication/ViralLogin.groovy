@@ -1,5 +1,7 @@
-package com.viral.automation
+package com.viral.automation.authentication
 
+import com.viral.automation.utils.ChromeBrowserProvider
+import com.viral.automation.utils.Log
 import geb.Browser
 
 class ViralLogin {

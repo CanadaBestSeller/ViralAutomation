@@ -21,8 +21,8 @@
         @Grab("org.seleniumhq.selenium:selenium-support:3.14.0")
 ])
 
-import com.viral.automation.ViralMain
-import com.viral.automation.Log
+import com.viral.automation.utils.ViralMain
+import com.viral.automation.utils.Log
 
 class MarketIntelligence {
 

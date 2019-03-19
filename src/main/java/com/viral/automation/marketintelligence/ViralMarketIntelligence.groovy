@@ -1,10 +1,12 @@
-package com.viral.automation
+package com.viral.automation.marketintelligence
 
-import com.viral.automation.modules.AnalysisViewModule
-import com.viral.automation.modules.CostCalculatorViewModule
-import com.viral.automation.modules.DetailedViewModule
-import com.viral.automation.modules.MarketTrendsModule
-import com.viral.automation.modules.StandardViewModule
+import com.viral.automation.marketintelligence.modules.AnalysisViewModule
+import com.viral.automation.marketintelligence.modules.CostCalculatorViewModule
+import com.viral.automation.marketintelligence.modules.DetailedViewModule
+import com.viral.automation.marketintelligence.modules.MarketTrendsModule
+import com.viral.automation.marketintelligence.modules.StandardViewModule
+import com.viral.automation.utils.ChromeBrowserProvider
+import com.viral.automation.utils.Log
 import geb.Browser
 import geb.Page
 

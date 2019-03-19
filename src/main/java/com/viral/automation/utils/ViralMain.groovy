@@ -1,5 +1,7 @@
-package com.viral.automation
+package com.viral.automation.utils
 
+import com.viral.automation.marketintelligence.ViralMarketIntelligence
+import com.viral.automation.authentication.ViralLogin
 import geb.Browser
 
 import static groovy.json.JsonOutput.prettyPrint

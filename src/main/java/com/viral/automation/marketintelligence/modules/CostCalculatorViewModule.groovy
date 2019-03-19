@@ -1,4 +1,4 @@
-package com.viral.automation.modules
+package com.viral.automation.marketintelligence.modules
 
 import geb.Module
 
