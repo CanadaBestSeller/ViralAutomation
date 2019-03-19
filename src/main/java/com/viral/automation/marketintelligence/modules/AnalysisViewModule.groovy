@@ -12,6 +12,7 @@ class AnalysisViewModule extends Module {
         possibleMonthlySales { $(".stats-row.el-row", 7).$("p", 1) }
         reviewsNeededToSellWell { $(".stats-row.el-row", 7).$("p", 2) }
         salesPatternAnalysis { $(".stats-row.el-row", 7).$("p", 3) }
+        tipContent { $("div.tip-content") }
     }
 
     void open() {
@@ -36,5 +37,6 @@ class AnalysisViewModule extends Module {
         marketIntelligenceResult['analysis_possibleMonthlySales'] = possibleMonthlySales.text()
         marketIntelligenceResult['analysis_reviewsNeededToSellWell'] = reviewsNeededToSellWell.text()
         marketIntelligenceResult['analysis_salesPatternAnalysis'] = salesPatternAnalysis.text()
+        marketIntelligenceResult['analysis_tipContent'] = tipContent.$("li")*.text().join(" | ")
     }
 }
