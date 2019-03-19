@@ -20,11 +20,9 @@ class ViralMain {
         List<Browser> browsers = new ArrayList<>()
 
         browsers.add ViralLogin.launch(email, password)
-        browsers.add ViralMarketIntelligence.searchAndRecord("black glue", marketIntelligenceResults)
-        browsers.add ViralMarketIntelligence.searchAndRecord("yellow glue", marketIntelligenceResults)
+        browsers.add ViralMarketIntelligence.searchAndRecord(searchTerm, marketIntelligenceResults)
 
         browsers.each { it.quit() }
-
         println prettyPrint(toJson(marketIntelligenceResults))
     }
 }

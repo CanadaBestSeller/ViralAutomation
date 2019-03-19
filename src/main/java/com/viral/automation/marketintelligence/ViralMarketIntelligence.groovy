@@ -62,6 +62,9 @@ class ViralMarketIntelligence {
             analysisView.open() // Due to AJAX, we must click to open the window to populate the data
             analysisView.transcribe(marketIntelligenceResult)
 
+            costCalculatorView.open() // Due to AJAX, we must click to open the window to populate the data
+            costCalculatorView.transcribe(marketIntelligenceResult)
+
             if (estimatedSearchVolume) { // Do this last. Takes time to load. Sometimes the search volume isn't provided
                 marketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
             }

@@ -49,16 +49,16 @@ class DetailedViewModule extends Module {
     }
 
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['top10AverageSales'] = top10AverageSales.text()
-        marketIntelligenceResult['top10AverageRevenue'] = top10AverageRevenue.text()
-        marketIntelligenceResult['top10AveragePrice'] = top10AveragePrice.text()
-        marketIntelligenceResult['top10AverageReviewCount'] = top10AverageReviewCount.text()
-        marketIntelligenceResult['top10AverageReviewRating'] = top10AverageReviewRating.text()
+        marketIntelligenceResult['details_top10AverageSales'] = top10AverageSales.text()
+        marketIntelligenceResult['details_top10AverageRevenue'] = top10AverageRevenue.text()
+        marketIntelligenceResult['details_top10AveragePrice'] = top10AveragePrice.text()
+        marketIntelligenceResult['details_top10AverageReviewCount'] = top10AverageReviewCount.text()
+        marketIntelligenceResult['details_top10AverageReviewRating'] = top10AverageReviewRating.text()
 
-        marketIntelligenceResult['page1AverageSales'] = page1AverageSales.text()
-        marketIntelligenceResult['page1AverageRevenue'] = page1AverageRevenue.text()
-        marketIntelligenceResult['page1AveragePrice'] = page1AveragePrice.text()
-        marketIntelligenceResult['page1AverageReviewCount'] = page1AverageReviewCount.text()
-        marketIntelligenceResult['page1AverageReviewRating'] = page1AverageReviewRating.text()
+        marketIntelligenceResult['details_page1AverageSales'] = page1AverageSales.text()
+        marketIntelligenceResult['details_page1AverageRevenue'] = page1AverageRevenue.text()
+        marketIntelligenceResult['details_page1AveragePrice'] = page1AveragePrice.text()
+        marketIntelligenceResult['details_page1AverageReviewCount'] = page1AverageReviewCount.text()
+        marketIntelligenceResult['details_page1AverageReviewRating'] = page1AverageReviewRating.text()
     }
 }

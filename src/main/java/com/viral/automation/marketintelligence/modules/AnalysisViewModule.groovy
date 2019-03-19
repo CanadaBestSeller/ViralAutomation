@@ -32,9 +32,9 @@ class AnalysisViewModule extends Module {
     }
 
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['productIdeaScore'] = productIdeaScore.text()
-        marketIntelligenceResult['possibleMonthlySales'] = possibleMonthlySales.text()
-        marketIntelligenceResult['reviewsNeededToSellWell'] = reviewsNeededToSellWell.text()
-        marketIntelligenceResult['salesPatternAnalysis'] = salesPatternAnalysis.text()
+        marketIntelligenceResult['analysis_productIdeaScore'] = productIdeaScore.text()
+        marketIntelligenceResult['analysis_possibleMonthlySales'] = possibleMonthlySales.text()
+        marketIntelligenceResult['analysis_reviewsNeededToSellWell'] = reviewsNeededToSellWell.text()
+        marketIntelligenceResult['analysis_salesPatternAnalysis'] = salesPatternAnalysis.text()
     }
 }
