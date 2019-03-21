@@ -8,6 +8,7 @@ class StandardViewModule extends Module {
     static content = {
         topSellersTab { $("div#tab-topSellers", 0) }
         standardViewSubTab { $("div#tab-0", 0) }
+        productListings { $("div.el-table__body-wrapper.is-scrolling-left", 0).$("table tr").moduleList(Product) }
     }
 
     void open() {
@@ -18,29 +19,43 @@ class StandardViewModule extends Module {
         standardViewSubTab.click()
         Log.info("Clicked Stnadard View tab.")
 
-        waitFor(10) { loaded }
+        waitFor(10) { productListings }
         Log.success("Opened Standard View.")
     }
 
-    boolean isLoaded() {
-        boolean loaded2 = $(".stats-row.el-row", 2).find("h5")*.text() == ["AVERAGE\nSALES", "AVERAGE\nREVENUE", "AVERAGE\nPRICE"]
-        boolean loaded3 = $(".stats-row.el-row", 3).find("h5")*.text() == ["AVERAGE REVIEW\nCOUNT", "AVERAGE REVIEW\nRATING"]
-        boolean loaded4 = $(".stats-row.el-row", 4).find("h5")*.text() == ["AVERAGE\nSALES", "AVERAGE\nREVENUE", "AVERAGE\nPRICE"]
-        boolean loaded5 = $(".stats-row.el-row", 5).find("h5")*.text() == ["AVERAGE REVIEW\nCOUNT", "AVERAGE REVIEW\nRATING"]
-        return loaded2 && loaded3 && loaded4 && loaded5
-    }
-
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['details_top10AverageSales'] = top10AverageSales.text()
-        marketIntelligenceResult['details_top10AverageRevenue'] = top10AverageRevenue.text()
-        marketIntelligenceResult['details_top10AveragePrice'] = top10AveragePrice.text()
-        marketIntelligenceResult['details_top10AverageReviewCount'] = top10AverageReviewCount.text()
-        marketIntelligenceResult['details_top10AverageReviewRating'] = top10AverageReviewRating.text()
+        marketIntelligenceResult['standard_top10BsrList'] = productListings.getAt(0..9)*.bsr
+        marketIntelligenceResult['standard_page1BsrList'] = productListings*.bsr
+        marketIntelligenceResult['standard_page1BrandList'] = productListings*.brand
+        marketIntelligenceResult['standard_page1SoldByList'] = productListings*.soldBy
+    }
+}
 
-        marketIntelligenceResult['details_page1AverageSales'] = page1AverageSales.text()
-        marketIntelligenceResult['details_page1AverageRevenue'] = page1AverageRevenue.text()
-        marketIntelligenceResult['details_page1AveragePrice'] = page1AveragePrice.text()
-        marketIntelligenceResult['details_page1AverageReviewCount'] = page1AverageReviewCount.text()
-        marketIntelligenceResult['details_page1AverageReviewRating'] = page1AverageReviewRating.text()
+class Product extends Module {
+    static content = {
+        cell { $("td", it) }
+
+        isOutlier { !cell(0).find("label.el-checkbox.is-checked").any() }
+        rank { cell(1).$("div.cell.el-tooltip").text() }
+        brand { cell(2).$("div.cell.el-tooltip").text() }
+        title { cell(3).$("div.cell.el-tooltip").text() }
+        category { cell(4).$("div.cell.el-tooltip").text() }
+        bsr { cell(5).$("div.cell.el-tooltip").text() }
+        bsrTrendPicture { cell(6).$("div.cell.el-tooltip").text() }
+        monthlyRevenue { cell(7).$("div.cell.el-tooltip").text() }
+        price { cell(8).$("div.cell.el-tooltip").text() }
+        unitMargin { cell(9).$("div.cell.el-tooltip").text() }
+        monthlySales { cell(10).$("div.cell.el-tooltip").text() }
+        reviewQuantity { cell(11).$("div.cell.el-tooltip").text() }
+        reviewRate { cell(12).$("div.cell.el-tooltip").text() }
+        averageRating { cell(13).$("div.cell.el-tooltip").text() }
+        soldBy { cell(14).$("div.cell.el-tooltip").text() }
+        salesToReviewsRatio { cell(15).$("div.cell.el-tooltip").text() }
+        dateListed { cell(16).$("div.cell.el-tooltip").text() }
+        netProfit { cell(17).$("div.cell.el-tooltip").text() }
+        last12mSales { cell(18).$("div.cell.el-tooltip").text() }
+        last12mRevenue { cell(19).$("div.cell.el-tooltip").text() }
+        next12mSales { cell(20).$("div.cell.el-tooltip").text() }
+        next12mRevenue { cell(21).$("div.cell.el-tooltip").text() }
     }
 }

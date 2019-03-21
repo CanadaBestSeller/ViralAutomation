@@ -53,6 +53,9 @@ class ViralMarketIntelligence {
             waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !spinner.displayed }
             Log.success "Market intelligence page fully loaded."
 
+            standardView.open() // Due to AJAX, we must click to open the window to populate the data
+            standardView.transcribe(marketIntelligenceResult)
+
             detailedView.open() // Due to AJAX, we must click to open the window to populate the data
             detailedView.transcribe(marketIntelligenceResult)
 
@@ -87,7 +90,7 @@ class ViralMarketIntelligencePage extends Page {
         spinner { $("div.el-loading-mask", 0) }
         estimatedSearchVolume { $("div.search-volume", 0).$("a", 0) }
 
-        stanardView { module StandardViewModule }
+        standardView { module StandardViewModule }
         detailedView { module DetailedViewModule }
         marketTrendsView { module MarketTrendsModule }
         analysisView { module AnalysisViewModule }
