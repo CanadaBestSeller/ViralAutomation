@@ -1,6 +1,6 @@
 package com.viral.automation.marketintelligence.modules
 
-import com.viral.automation.utils.Log
+import com.viral.automation.main.Log
 import geb.Module
 
 class StandardViewModule extends Module {
@@ -17,7 +17,7 @@ class StandardViewModule extends Module {
 
         waitFor(2) { standardViewSubTab.displayed }
         standardViewSubTab.click()
-        Log.info("Clicked Stnadard View tab.")
+        Log.info("Clicked Standard View tab.")
 
         waitFor(10) { productListings }
         Log.success("Opened Standard View.")

@@ -5,8 +5,8 @@ import com.viral.automation.marketintelligence.modules.CostCalculatorViewModule
 import com.viral.automation.marketintelligence.modules.DetailedViewModule
 import com.viral.automation.marketintelligence.modules.MarketTrendsModule
 import com.viral.automation.marketintelligence.modules.StandardViewModule
-import com.viral.automation.utils.ChromeBrowserProvider
-import com.viral.automation.utils.Log
+import com.viral.automation.main.ChromeBrowserProvider
+import com.viral.automation.main.Log
 import geb.Browser
 import geb.Page
 

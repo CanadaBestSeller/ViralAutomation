@@ -1,4 +1,4 @@
-package com.viral.automation.utils
+package com.viral.automation.main
 
 import com.viral.automation.marketintelligence.ViralMarketIntelligence
 import com.viral.automation.authentication.ViralLogin
@@ -23,6 +23,7 @@ class ViralMain {
         browsers.add ViralMarketIntelligence.searchAndRecord(searchTerm, marketIntelligenceResults)
 
         browsers.each { it.quit() }
+
         println prettyPrint(toJson(marketIntelligenceResults))
     }
 }

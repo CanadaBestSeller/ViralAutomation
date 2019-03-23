@@ -1,6 +1,6 @@
 package com.viral.automation.marketintelligence.modules
 
-import com.viral.automation.utils.Log
+import com.viral.automation.main.Log
 import geb.Module
 
 class AnalysisViewModule extends Module {

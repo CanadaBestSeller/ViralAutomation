@@ -1,4 +1,4 @@
-package com.viral.automation.utils
+package com.viral.automation.main
 
 class Log {
     private static APPLICATION_TAG = '[ViralAutomation] '

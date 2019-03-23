@@ -1,4 +1,4 @@
-package com.viral.automation.utils
+package com.viral.automation.main
 
 import geb.Browser
 import org.openqa.selenium.chrome.ChromeDriver
