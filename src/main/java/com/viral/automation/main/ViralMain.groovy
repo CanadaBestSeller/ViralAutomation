@@ -1,5 +1,6 @@
 package com.viral.automation.main
 
+import com.viral.automation.analysis.ViralMarketIntelligenceAnalyzer
 import com.viral.automation.marketintelligence.ViralMarketIntelligence
 import com.viral.automation.authentication.ViralLogin
 import geb.Browser
@@ -24,7 +25,15 @@ class ViralMain {
 
         browsers.each { it.quit() }
 
-        println prettyPrint(toJson(marketIntelligenceResults))
+        def marketIntelligenceAnalysis = ViralMarketIntelligenceAnalyzer.analyzeProducts(marketIntelligenceResults)
+        println prettyPrint(toJson(marketIntelligenceAnalysis))
+        println prettyPrint(toJson(marketIntelligenceAnalysis))
+    }
+
+    static void writeFile(file) {
+        final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
+        def output = new File("./market_intelligence_result_" + now + ".txt")
+        output.write("LOL")
     }
 }
 

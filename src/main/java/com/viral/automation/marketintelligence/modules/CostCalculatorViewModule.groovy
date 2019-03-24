@@ -32,10 +32,10 @@ class CostCalculatorViewModule extends Module {
     }
 
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['cost_totalAveragePrice'] = totalAveragePrice.text()
-        marketIntelligenceResult['cost_profitPerUnit'] = profitPerUnit.text()
-        marketIntelligenceResult['cost_landedUnitCost'] = landedUnitCost.text()
-        marketIntelligenceResult['cost_amazonFeesCost'] = amazonFeesCost.text()
-        marketIntelligenceResult['cost_referralFeeCost'] = referralFeeCost.text()
+        marketIntelligenceResult['calc_totalAveragePrice'] = totalAveragePrice.text()
+        marketIntelligenceResult['calc_profitPerUnit'] = profitPerUnit.text()
+        marketIntelligenceResult['calc_landedUnitCost'] = landedUnitCost.text()
+        marketIntelligenceResult['calc_amazonFeesCost'] = amazonFeesCost.text()
+        marketIntelligenceResult['calc_referralFeeCost'] = referralFeeCost.text()
     }
 }

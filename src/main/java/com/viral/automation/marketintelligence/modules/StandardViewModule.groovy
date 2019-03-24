@@ -28,6 +28,7 @@ class StandardViewModule extends Module {
         marketIntelligenceResult['standard_page1BsrList'] = productListings*.bsr
         marketIntelligenceResult['standard_page1BrandList'] = productListings*.brand
         marketIntelligenceResult['standard_page1SoldByList'] = productListings*.soldBy
+        marketIntelligenceResult['standard_netMonthlyProfit'] = productListings*.netProfit
     }
 }
 

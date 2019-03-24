@@ -1,7 +1,11 @@
 package com.viral.automation.main
 
 class Log {
+
+    private static final boolean DEBUG_FLAG = false;
+
     private static APPLICATION_TAG = '[ViralAutomation] '
+    private static DEBUG_TAG = '[INFO] '
     private static INFO_TAG = '[INFO] '
     private static WARN_TAG = '[WARN] '
     private static ERROR_TAG = '[ERROR] '
@@ -13,4 +17,10 @@ class Log {
     static void warn(String log) {println APPLICATION_TAG + WARN_TAG + log}
     static void error(String log) {println APPLICATION_TAG + ERROR_TAG + log + SEPARATOR}
     static void success(String log) {println APPLICATION_TAG + SUCCESS_TAG + log + SEPARATOR}
+
+    static void debug(String log) {
+        if (DEBUG_FLAG == true) {
+            println APPLICATION_TAG + DEBUG_TAG + log
+        }
+    }
 }

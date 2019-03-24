@@ -11,6 +11,8 @@
  * Target's Working directory: (root of git folder, e.g. /Users/lidavid/workspace/ViralAutomation
  * Target's Program arguments: <viral-launch-email> <viral-launch-password> "<search-term-in-quotes>"
  *
+ * Output of market intelligence will be in this top-level folder.
+ *
  * *** IMPORTANT ***
  * Dependencies need to be declared here, as well as in the POM file.
  * By doing so, you will be able to execute this file via either bash or IntelliJ.
