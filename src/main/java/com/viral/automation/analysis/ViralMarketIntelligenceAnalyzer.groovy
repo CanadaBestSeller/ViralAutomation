@@ -55,7 +55,7 @@ class ViralMarketIntelligenceAnalyzer {
         productAnalysis['analysis_2.5xInventoryCost'] = page1AverageSales * averageCost * 2.5
 
         productAnalysis['analysis_unitMargin'] = averageProfit
-        productAnalysis['analysis_unitMarginPercentage'] = averageProfit / averagePrice
+        productAnalysis['analysis_unitMarginPercentage'] = averageProfit / averagePrice * 100
 
         productAnalysis['analysis_top10AverageMonthlySales'] = toDouble(rawProductInfo['raw_details_top10AverageSales'])
 

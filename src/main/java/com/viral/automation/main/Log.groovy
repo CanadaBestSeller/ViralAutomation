@@ -5,7 +5,7 @@ class Log {
     private static final boolean DEBUG_FLAG = true;
 
     private static APPLICATION_TAG = '[ViralAutomation] '
-    private static DEBUG_TAG = '[INFO] '
+    private static DEBUG_TAG = '[DEBUG] '
     private static INFO_TAG = '[INFO] '
     private static WARN_TAG = '[WARN] '
     private static ERROR_TAG = '[ERROR] '
