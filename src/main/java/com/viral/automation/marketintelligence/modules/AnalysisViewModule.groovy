@@ -33,10 +33,10 @@ class AnalysisViewModule extends Module {
     }
 
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['analysis_productIdeaScore'] = productIdeaScore.text()
-        marketIntelligenceResult['analysis_possibleMonthlySales'] = possibleMonthlySales.text()
-        marketIntelligenceResult['analysis_reviewsNeededToSellWell'] = reviewsNeededToSellWell.text()
-        marketIntelligenceResult['analysis_salesPatternAnalysis'] = salesPatternAnalysis.text()
-        marketIntelligenceResult['analysis_tipContent'] = tipContent.$("li")*.text().join(" | ")
+        marketIntelligenceResult['raw_analysis_productIdeaScore'] = productIdeaScore.text()
+        marketIntelligenceResult['raw_analysis_possibleMonthlySales'] = possibleMonthlySales.text()
+        marketIntelligenceResult['raw_analysis_reviewsNeededToSellWell'] = reviewsNeededToSellWell.text()
+        marketIntelligenceResult['raw_analysis_salesPatternAnalysis'] = salesPatternAnalysis.text()
+        marketIntelligenceResult['raw_analysis_tipContent'] = tipContent.$("li")*.text().join(" | ")
     }
 }

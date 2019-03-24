@@ -32,9 +32,9 @@ class MarketTrendsModule extends Module {
     }
 
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['trends_avgPriceOver90Days'] = avgPriceOver90Days.text()
-        marketIntelligenceResult['trends_bestSellerPeriod'] = bestSellerPeriod.text()
-        marketIntelligenceResult['trends_rateOfReviewIncrease'] = rateOfReviewIncrease.text()
-        marketIntelligenceResult['trends_annualSalesTrend'] = annualSalesTrend.text()
+        marketIntelligenceResult['raw_trends_avgPriceOver90Days'] = avgPriceOver90Days.text()
+        marketIntelligenceResult['raw_trends_bestSellerPeriod'] = bestSellerPeriod.text()
+        marketIntelligenceResult['raw_trends_rateOfReviewIncrease'] = rateOfReviewIncrease.text()
+        marketIntelligenceResult['raw_trends_annualSalesTrend'] = annualSalesTrend.text()
     }
 }

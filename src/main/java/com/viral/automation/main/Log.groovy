@@ -2,7 +2,7 @@ package com.viral.automation.main
 
 class Log {
 
-    private static final boolean DEBUG_FLAG = false;
+    private static final boolean DEBUG_FLAG = true;
 
     private static APPLICATION_TAG = '[ViralAutomation] '
     private static DEBUG_TAG = '[INFO] '

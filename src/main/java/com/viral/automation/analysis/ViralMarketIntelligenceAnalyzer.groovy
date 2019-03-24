@@ -10,20 +10,20 @@ class ViralMarketIntelligenceAnalyzer {
      *
      * {
      *     "product A": {
-     *         "standard_top10BsrList": [
+     *         "raw_standard_top10BsrList": [
      *             "2,399", ...
      *         ],
-     *         "standard_page1BsrList": [
+     *         "raw_standard_page1BsrList": [
      *             "2,399", ...
      *         ],
-     *         "details_top10AverageSales": "608.2",
-     *         "details_top10AverageRevenue": "$15,173.76",
-     *         "details_top10AveragePrice": "$24.64",
+     *         "raw_details_top10AverageSales": "608.2",
+     *         "raw_details_top10AverageRevenue": "$15,173.76",
+     *         "raw_details_top10AveragePrice": "$24.64",
      *         ...
      *     },
      *
      *     "product B": {
-     *         "standard_top10BsrList": [
+     *         "raw_standard_top10BsrList": [
      *             "2,399", ...
      *         ],
      *         ...
@@ -38,53 +38,53 @@ class ViralMarketIntelligenceAnalyzer {
         return productAnalysis
     }
 
-    private static analyzeProduct(productInfo) {
+    private static analyzeProduct(rawProductInfo) {
 
         def productAnalysis = [:]
 
-        def page1AverageSales = toDouble(productInfo['details_page1AverageSales'])
-        def landedCost = toDouble(productInfo['calc_landedUnitCost'])
-        def amazonFees = toDouble(productInfo['calc_amazonFeesCost'])
-        def referralFees = toDouble(productInfo['calc_referralFeeCost'])
-        def averagePrice = toDouble(productInfo['calc_totalAveragePrice'])
+        def page1AverageSales = toDouble(rawProductInfo['raw_details_page1AverageSales'])
+        def landedCost = toDouble(rawProductInfo['raw_calc_landedUnitCost'])
+        def amazonFees = toDouble(rawProductInfo['raw_calc_amazonFeesCost'])
+        def referralFees = toDouble(rawProductInfo['raw_calc_referralFeeCost'])
+        def averagePrice = toDouble(rawProductInfo['raw_calc_totalAveragePrice'])
         def averageCost = landedCost + amazonFees + referralFees
-        def averageProfit = toDouble(productInfo['calc_profitPerUnit'])
+        def averageProfit = toDouble(rawProductInfo['raw_calc_profitPerUnit'])
 
-        productAnalysis['averagePrice'] = averagePrice
-        productAnalysis['averageCost'] = averageCost
-        productAnalysis['2.5xInventoryCost'] = page1AverageSales * averageCost * 100
+        productAnalysis['analysis_averagePrice'] = averagePrice
+        productAnalysis['analysis_averageCost'] = averageCost
+        productAnalysis['analysis_2.5xInventoryCost'] = page1AverageSales * averageCost * 2.5
 
-        productAnalysis['unitMargin'] = averageProfit
-        productAnalysis['unitMarginPercentage'] = averageProfit / averagePrice
+        productAnalysis['analysis_unitMargin'] = averageProfit
+        productAnalysis['analysis_unitMarginPercentage'] = averageProfit / averagePrice
 
-        productAnalysis['top10AverageMonthlySales'] = toDouble(productInfo['details_top10AverageSales'])
+        productAnalysis['analysis_top10AverageMonthlySales'] = toDouble(rawProductInfo['raw_details_top10AverageSales'])
 
-        final List<Double> monthlyProfit = toDoubleList(productInfo['standard_netMonthlyProfit'])
-        productAnalysis['medianMonthlyProfit'] = Quantiles.percentiles().index(50).compute(monthlyProfit)
-        productAnalysis['25PercentileMonthlyProfit'] = Quantiles.percentiles().index(25).compute(monthlyProfit)
+        final List<Double> monthlyProfit = toDoubleList(rawProductInfo['raw_standard_netMonthlyProfit'])
+        productAnalysis['analysis_medianMonthlyProfit'] = Quantiles.percentiles().index(50).compute(monthlyProfit)
+        productAnalysis['analysis_25PercentileMonthlyProfit'] = Quantiles.percentiles().index(25).compute(monthlyProfit)
 
-        productAnalysis['top10AverageAverageReviewCount'] = toDouble(productInfo['details_top10AverageReviewCount'])
+        productAnalysis['analysis_top10AverageAverageReviewCount'] = toDouble(rawProductInfo['raw_details_top10AverageReviewCount'])
 
-        final List<Double> top10bsrDouble = toDoubleList(productInfo['standard_top10BsrList'])
+        final List<Double> top10bsrDouble = toDoubleList(rawProductInfo['raw_standard_top10BsrList'])
         final List<Double> top10sub3000bsrDouble = top10bsrDouble.findAll { it <= 3000 }
-        productAnalysis['top10Sub3000BsrCount'] = top10sub3000bsrDouble.size()
+        productAnalysis['analysis_top10Sub3000BsrCount'] = top10sub3000bsrDouble.size()
 
         final List<Double> top10sub10000bsrDouble = top10bsrDouble.findAll { it <= 10000 }
-        productAnalysis['top10Sub10000BsrCount'] = top10sub10000bsrDouble.size()
+        productAnalysis['analysis_top10Sub10000BsrCount'] = top10sub10000bsrDouble.size()
 
-        final List<Double> averagePage1Bsr = toDoubleList(productInfo['standard_page1BsrList'])
-        productAnalysis['averagePage1Bsr'] = averagePage1Bsr.sum() / averagePage1Bsr.count { it != null }
+        final List<Double> averagePage1Bsr = toDoubleList(rawProductInfo['raw_standard_page1BsrList'])
+        productAnalysis['analysis_averagePage1Bsr'] = averagePage1Bsr.sum() / averagePage1Bsr.count { it != null }
 
-        productAnalysis['exactSearches'] = toDouble(productInfo['estimatedSearchVolume'])
+        productAnalysis['analysis_exactSearches'] = toDouble(rawProductInfo['estimatedSearchVolume'])
 
-        productAnalysis['amznListingCount'] = productInfo['standard_page1SoldByList'].count { it == "AMZN" }
+        productAnalysis['analysis_amznListingCount'] = rawProductInfo['raw_standard_page1SoldByList'].count { it == "AMZN" }
 
-        productAnalysis['dominatingBrandListingCount'] = maxFrequency(productInfo['standard_page1BrandList'])
+        productAnalysis['analysis_dominatingBrandListingCount'] = maxFrequency(rawProductInfo['raw_standard_page1BrandList'])
 
-        productAnalysis['isSeasonal'] = productInfo['analysis_tipContent'].contains("season")
-        productAnalysis['isTrend'] = productInfo['analysis_tipContent'].contains("trend")
+        productAnalysis['analysis_isSeasonal'] = rawProductInfo['raw_analysis_tipContent'].contains("season")
+        productAnalysis['analysis_isTrend'] = rawProductInfo['raw_analysis_tipContent'].contains("trend")
 
-        productAnalysis['finalScore'] = calculateFinalScore(productAnalysis)
+        ViralMarketIntelligenceProductScorer.calculateFinalScore(productAnalysis)
         return productAnalysis
     }
 
@@ -117,7 +117,4 @@ class ViralMarketIntelligenceAnalyzer {
         return Collections.max(uniqueOccurrenceList)
     }
 
-    private static calculateFinalScore(productAnalysis) {
-        return 0
-    }
 }

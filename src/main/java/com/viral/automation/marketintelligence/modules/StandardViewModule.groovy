@@ -24,11 +24,11 @@ class StandardViewModule extends Module {
     }
 
     def transcribe(marketIntelligenceResult) {
-        marketIntelligenceResult['standard_top10BsrList'] = productListings.getAt(0..9)*.bsr
-        marketIntelligenceResult['standard_page1BsrList'] = productListings*.bsr
-        marketIntelligenceResult['standard_page1BrandList'] = productListings*.brand
-        marketIntelligenceResult['standard_page1SoldByList'] = productListings*.soldBy
-        marketIntelligenceResult['standard_netMonthlyProfit'] = productListings*.netProfit
+        marketIntelligenceResult['raw_standard_top10BsrList'] = productListings.getAt(0..9)*.bsr
+        marketIntelligenceResult['raw_standard_page1BsrList'] = productListings*.bsr
+        marketIntelligenceResult['raw_standard_page1BrandList'] = productListings*.brand
+        marketIntelligenceResult['raw_standard_page1SoldByList'] = productListings*.soldBy
+        marketIntelligenceResult['raw_standard_netMonthlyProfit'] = productListings*.netProfit
     }
 }
 
