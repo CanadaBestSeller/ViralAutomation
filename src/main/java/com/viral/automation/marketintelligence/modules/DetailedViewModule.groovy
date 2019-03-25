@@ -30,14 +30,14 @@ class DetailedViewModule extends Module {
 
     void open() {
         topSellersTab.click()
-        Log.info("Clicked Top Sellers tab.")
+        Log.debug("Clicked Top Sellers tab.")
 
         waitFor(2) { detailedStatisticsSubTab.displayed }
         detailedStatisticsSubTab.click()
-        Log.info("Clicked Detailed Statistics sub-tab.")
+        Log.debug("Clicked Detailed Statistics sub-tab.")
 
         waitFor(10) { loaded }
-        Log.success("Opened Detailed Statistics.")
+        Log.info("Opened Detailed Statistics.")
     }
 
     boolean isLoaded() {

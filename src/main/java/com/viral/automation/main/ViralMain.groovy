@@ -26,8 +26,6 @@ class ViralMain {
         browsers.each { it.quit() }
 
         def marketIntelligenceAnalysis = ViralMarketIntelligenceAnalyzer.analyzeProducts(marketIntelligenceResults)
-        println prettyPrint(toJson(marketIntelligenceAnalysis))
-        println prettyPrint(toJson(marketIntelligenceAnalysis))
     }
 
     static void writeFile(file) {

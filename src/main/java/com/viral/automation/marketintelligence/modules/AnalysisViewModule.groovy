@@ -17,9 +17,9 @@ class AnalysisViewModule extends Module {
 
     void open() {
         analysisViewTab.click()
-        Log.info("Clicked VL Analysis tab.")
+        Log.debug("Clicked VL Analysis tab.")
         waitFor(2) { loaded }
-        Log.success("Opened Viral Launch Analysis.")
+        Log.info("Opened Viral Launch Analysis.")
     }
 
     boolean isLoaded() {

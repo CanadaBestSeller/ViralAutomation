@@ -11,8 +11,8 @@ class ViralMarketIntelligenceProductScorer {
      * Uses a predicate-based scoring system. Every predicate has a score associated.
      * @param p input productAnalysis. *This method will mutate the productAnalysis to add entries for score*
      */
-    private static void calculateFinalScore(p) {
-        double finalScore = 0;
+    static void calculateFinalScore(p) {
+        double finalScore = 0
 
         // Predicates to be evaluated
         finalScore += evaluate('HAS_BUDGET', BUDGET_IN_DOLLARS > p['analysis_2.5xInventoryCost'], 1, 0)
@@ -39,10 +39,11 @@ class ViralMarketIntelligenceProductScorer {
 
 
         p['finalScore'] = finalScore
+        Log.success("FINAL SCORE: ===== ${finalScore} =====")
     }
 
     /**
-     * Convenience method to wrap ternary predicates to execute addtional logic
+     * Convenience method to wrap ternary predicates to execute additional logic
      * @param conditionName name of the condition to be logged
      * @param score should already be evaluated by ternary statement
      * @return the same score as the input
@@ -54,7 +55,7 @@ class ViralMarketIntelligenceProductScorer {
             final double failureScore
     ) {
         double score = condition ? successScore : failureScore
-        Log.info("${condition ? '[X] ' : '[ ]'} ${conditionName.padLeft(60)} Points applied: ${score.toString()}.")
+        Log.info("${condition ? '[X]' : '[ ]'} ${conditionName.padRight(50)} Points applied: ${score.toString()}")
         return score
     }
 }

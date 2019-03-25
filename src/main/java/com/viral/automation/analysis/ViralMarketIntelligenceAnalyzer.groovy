@@ -3,6 +3,9 @@ package com.viral.automation.analysis
 import com.google.common.math.Quantiles
 import com.viral.automation.main.Log
 
+import static groovy.json.JsonOutput.prettyPrint
+import static groovy.json.JsonOutput.toJson
+
 class ViralMarketIntelligenceAnalyzer {
 
     /**
@@ -33,12 +36,12 @@ class ViralMarketIntelligenceAnalyzer {
     static analyzeProducts(productToMarketIntelligenceMap) {
         def productAnalysis = [:]
         productToMarketIntelligenceMap.each {
-            product, productMarketIntelligence -> productAnalysis[product] = analyzeProduct(productMarketIntelligence)
+            product, productMarketIntelligence -> productAnalysis[product] = analyzeProduct(product, productMarketIntelligence)
         }
         return productAnalysis
     }
 
-    private static analyzeProduct(rawProductInfo) {
+    private static analyzeProduct(productName, rawProductInfo) {
 
         def productAnalysis = [:]
 
@@ -84,6 +87,8 @@ class ViralMarketIntelligenceAnalyzer {
         productAnalysis['analysis_isSeasonal'] = rawProductInfo['raw_analysis_tipContent'].contains("season")
         productAnalysis['analysis_isTrend'] = rawProductInfo['raw_analysis_tipContent'].contains("trend")
 
+        Log.info("\n" + productName.toUpperCase() + ":\n" + prettyPrint(toJson(productAnalysis)))
+
         ViralMarketIntelligenceProductScorer.calculateFinalScore(productAnalysis)
         return productAnalysis
     }
@@ -103,11 +108,11 @@ class ViralMarketIntelligenceAnalyzer {
     private static double maxFrequency(List<String> inputList) {
         List<String> inputListClone = new ArrayList<>()
         for(String s : inputList) {
-            inputListClone.add(s);
+            inputListClone.add(s)
         }
 
         List<String> uniqueList = inputList.unique() // Unique is a mutative method
-        List<Integer> uniqueOccurrenceList = new ArrayList<>();
+        List<Integer> uniqueOccurrenceList = new ArrayList<>()
         for (String s : uniqueList) {
             Log.debug("Occurrence for brand '" + s + ':"')
             int frequency = Collections.frequency(inputListClone, s)

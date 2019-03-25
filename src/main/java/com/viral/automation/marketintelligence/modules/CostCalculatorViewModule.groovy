@@ -17,9 +17,9 @@ class CostCalculatorViewModule extends Module {
 
     void open() {
         costCalculatorViewTab.click()
-        Log.info("Clicked Cost Calculator tab.")
+        Log.debug("Clicked Cost Calculator tab.")
         waitFor(2) { loaded }
-        Log.success("Opened Cost Calculator.")
+        Log.info("Opened Cost Calculator.")
     }
 
     boolean isLoaded() {

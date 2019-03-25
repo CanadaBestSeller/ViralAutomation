@@ -16,9 +16,9 @@ class MarketTrendsModule extends Module {
 
     void open() {
         marketTrendsTab.click()
-        Log.info("Opened Market Trends.")
+        Log.debug("Opened Market Trends.")
         waitFor(2) { loaded }
-        Log.success("Opened Market Trends.")
+        Log.info("Opened Market Trends.")
     }
 
     boolean isLoaded() {

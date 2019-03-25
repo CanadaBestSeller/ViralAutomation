@@ -13,14 +13,14 @@ class StandardViewModule extends Module {
 
     void open() {
         topSellersTab.click()
-        Log.info("Clicked Top Sellers tab.")
+        Log.debug("Clicked Top Sellers tab.")
 
         waitFor(2) { standardViewSubTab.displayed }
         standardViewSubTab.click()
-        Log.info("Clicked Standard View tab.")
+        Log.debug("Clicked Standard View tab.")
 
         waitFor(10) { productListings }
-        Log.success("Opened Standard View.")
+        Log.info("Opened Standard View.")
     }
 
     def transcribe(marketIntelligenceResult) {

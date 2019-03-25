@@ -51,7 +51,7 @@ class ViralMarketIntelligence {
             Log.info "Market intelligence page started loading..."
 
             waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !spinner.displayed }
-            Log.success "Market intelligence page fully loaded."
+            Log.info "Market intelligence page fully loaded!"
 
             standardView.open() // Due to AJAX, we must click to open the window to populate the data
             standardView.transcribe(marketIntelligenceResult)
@@ -72,7 +72,8 @@ class ViralMarketIntelligence {
                 marketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
             }
 
-            Log.success("Analyzed!\n" + prettyPrint(toJson(marketIntelligenceResult)))
+            Log.info("Analyzed!")
+            Log.debug("Market intelligence RAW result:\n" + prettyPrint(toJson(marketIntelligenceResult)))
 
             marketIntelligenceResults[searchTerm] = marketIntelligenceResult
         }
