@@ -1,16 +1,13 @@
 package com.viral.automation.marketintelligence
 
-import com.viral.automation.marketintelligence.modules.AnalysisViewModule
-import com.viral.automation.marketintelligence.modules.CostCalculatorViewModule
-import com.viral.automation.marketintelligence.modules.DetailedViewModule
-import com.viral.automation.marketintelligence.modules.MarketTrendsModule
-import com.viral.automation.marketintelligence.modules.StandardViewModule
 import com.viral.automation.main.ChromeBrowserProvider
 import com.viral.automation.main.Log
+import com.viral.automation.marketintelligence.modules.*
 import geb.Browser
 import geb.Page
 
-import static groovy.json.JsonOutput.*
+import static groovy.json.JsonOutput.prettyPrint
+import static groovy.json.JsonOutput.toJson
 
 /**
  * This class essentially scrapes 2 components of the market intelligence page:
@@ -32,7 +29,7 @@ import static groovy.json.JsonOutput.*
  */
 class ViralMarketIntelligence {
 
-    public static final int PAGE_LOAD_TIMEOUT_IN_SECONDS = 30
+    public static final int PAGE_LOAD_TIMEOUT_IN_SECONDS = 45
 
     static Browser searchAndRecord(searchTerm, marketIntelligenceResults) {
 

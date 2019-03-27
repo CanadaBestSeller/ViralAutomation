@@ -12,10 +12,10 @@ class ViralLogin {
         def window = ChromeBrowserProvider.get()
         window.drive {
             go "https://viral-launch.com/sellers/signIn.html"
-            waitFor { $("#signInButton").isDisplayed() }
-            $("#signInEmail", 0).value(email)
-            $("#signInPass", 0).value(password)
-            $("#signInButton", 0).click()
+            waitFor { $("button.signIn__button").isDisplayed() }
+            $("input.signIn__input.null", 0).value(email)
+            $("input.signIn__input.null", 1).value(password)
+            $("button.signIn__button", 0).click()
         }
 
         Log.success "Logged in!"

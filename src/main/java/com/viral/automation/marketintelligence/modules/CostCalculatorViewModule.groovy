@@ -10,15 +10,16 @@ class CostCalculatorViewModule extends Module {
 
         totalAveragePrice { $("p.el-tooltip.item.product-price", 0) }
         profitPerUnit { $("p.profit", 0) }
-        referralFeeCost { $("div.fees-container", 0).$("div.fee-amount", 0) }
-        amazonFeesCost { $("div.fees-container", 0).$("div.fee-amount", 1) }
-        landedUnitCost { $("div.fees-container", 0).$("div.fee-amount", 2) }
+        referralFeeCost { $("div.fee-amount", 0) }
+        amazonFeesCost { $("div.fee-amount", 1) }
+        landedUnitCost { $("div.fee-amount", 2) }
     }
 
     void open() {
         costCalculatorViewTab.click()
         Log.debug("Clicked Cost Calculator tab.")
         waitFor(2) { loaded }
+        waitFor(20) { !referralFeeCost.text().isEmpty() }
         Log.info("Opened Cost Calculator.")
     }
 
