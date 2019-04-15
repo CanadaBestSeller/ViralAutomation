@@ -20,7 +20,8 @@ class ViralMain {
 
         browsers.add ViralLogin.launch(email, password)
 
-        browsers.add ViralProductDiscovery.discoverAndRecord(input, marketIntelligenceResults)
+        def productDiscoveryResults = []
+        browsers.add ViralProductDiscovery.discoverAndRecord(input, productDiscoveryResults, 3)
 //        browsers.add ViralMarketIntelligence.searchAndRecord(input, marketIntelligenceResults)
 
         browsers.each { it.quit() }

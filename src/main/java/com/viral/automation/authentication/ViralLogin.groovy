@@ -13,6 +13,7 @@ class ViralLogin {
         window.drive {
             go "https://viral-launch.com/sellers/signIn.html"
             waitFor { $("button.signIn__button").isDisplayed() }
+            Thread.sleep(2_000)
             $("input.signIn__input.null", 0).value(email)
             $("input.signIn__input.null", 1).value(password)
             $("button.signIn__button", 0).click()
