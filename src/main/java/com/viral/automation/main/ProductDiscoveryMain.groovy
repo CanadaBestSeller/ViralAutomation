@@ -6,7 +6,8 @@ import geb.Browser
 
 class ProductDiscoveryMain {
 
-    static void main(String... args) { // This is an entry point for IntelliJ target only
+    // This is an entry point for IntelliJ target only
+    static void main(String... args) {
 
         final String EMAIL = args[0]
         final String PASSWORD = args[1]
@@ -18,6 +19,7 @@ class ProductDiscoveryMain {
         print executeProductDiscovery(EMAIL, PASSWORD, TERM, PRESETNAME, PAGESTOTRANSCRIBE)
     }
 
+    // This is a method serving a different file (the endpoint for bash). In bash we return the result to be written to a file.
     static String executeProductDiscovery(String email, String password, String term, String presetName, String pagesToTranscribe) {
         List<String> productDiscoveryResults = new ArrayList<>()
 

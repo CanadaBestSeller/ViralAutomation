@@ -43,8 +43,6 @@ class ProductDiscovery {
         final String PRESET_NAME = args[1]
         final String PAGES_TO_TRANSCRIBE = args[2]
 
-        Log.info "Executing market intelligence for '${SEARCH_TERM}'..."
-
         final String discoverResults = executeProductDiscovery(USERNAME, PASSWORD, SEARCH_TERM, PRESET_NAME, PAGES_TO_TRANSCRIBE)
         print discoverResults
     }
@@ -68,7 +66,7 @@ class ProductDiscovery {
 
     static void writeFile(file) {
         final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
-        def output = new File("./market_intelligence_result_" + now + ".txt")
+        def output = new File("./product_discovery_result_" + now + ".txt")
         output.write("LOL")
     }
 }

@@ -12,7 +12,7 @@ class ViralProductDiscovery {
             String discoverTerm, String presetName, int numberOfPagesToTranscribe, List<String> productDiscoveryResults) {
 
         def params = [marketplace: "US", discoverTerm: discoverTerm, presetName: presetName]
-        Log.info "Discovering products with $params..."
+        Log.info "***** Discovering products with $params *****\n"
 
         def browser = ChromeBrowserProvider.get()
         browser.drive {

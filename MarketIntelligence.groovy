@@ -1,17 +1,18 @@
 /**
- * You must install ChromeDriver locally!
- * brew install chromedriver
+ * You must install ChromeDriver V72 locally!
+ * https://chromedriver.storage.googleapis.com/index.html
  * move driver to '/usr/local/bin/chromedriver'
  *
- * Bash command:
- * groovy --classpath "./src/main/java" MarketIntelligence.groovy '<search-term-in-quotes>'
+ * This file is for bash only. It's an entry point for bash which can be execute with the following command:
+ * groovy --classpath "./src/main/java" MarketIntelligence.groovy <search-term-in-quotes>
  *
- * Intellij target (with debugging capabilities):
- * Target's Main class: com.viral.automation.ViralMain
+ * You can execute Product Discovery with an Intellij target as well (which comes with debugging capabilities).
+ * However, the entry point is a different file:
+ * Target's Main class: com.viral.automation.MarketIntelligenceMain
  * Target's Working directory: (root of git folder, e.g. /Users/lidavid/workspace/ViralAutomation
- * Target's Program arguments: <viral-launch-email> <viral-launch-password> "<search-term-in-quotes>"
+ * Target's Program arguments: <viral-launch-email> <viral-launch-password> <search-term-in-quotes>
  *
- * Output of market intelligence will be in this top-level folder.
+ * Output of this groovy file will be in this top-level folder.
  *
  * *** IMPORTANT ***
  * Dependencies need to be declared here, as well as in the POM file.
@@ -23,27 +24,28 @@
         @Grab("org.seleniumhq.selenium:selenium-support:3.14.0")
 ])
 
-import com.viral.automation.main.ViralMain
+import com.viral.automation.main.MarketIntelligenceMain
 import com.viral.automation.main.Log
 
 class MarketIntelligence {
 
     static void main(String... args) {
 
-        exitIfNoArguments(args)
-
         clearScreen()
-        String SEARCH_TERM = args[0]
-        Log.info "Executing market intelligence for '${SEARCH_TERM}'..."
+        exitIfInsufficientArguments(args)
 
-        String[] credentials = getCredentials()
-        ViralMain.main(credentials[0], credentials[1], SEARCH_TERM)
+        final String[] credentials = getCredentials()
+        final String USERNAME = credentials[0]
+        final String PASSWORD = credentials[1]
+        final String SEARCH_TERM = args[0]
+
+        MarketIntelligenceMain.main(USERNAME, PASSWORD, SEARCH_TERM)
     }
 
-    private static exitIfNoArguments(String... args) {
-        if (args.length == 0) {
+    private static exitIfInsufficientArguments(String... args) {
+        if (args.length != 1) {
             clearScreen()
-            Log.error "Please enter the search term in quotation marks!"
+            Log.error "Usage: MarketIntelligence.groovy <search-term-in-quotes>"
             System.exit(0)
         }
     }
@@ -56,5 +58,10 @@ class MarketIntelligence {
     private static void clearScreen() {
         for (int i = 0; i < 50; ++i) System.out.println();
     }
-}
 
+    static void writeFile(file) {
+        final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
+        def output = new File("./market_intelligence_result_" + now + ".txt")
+        output.write("LOL")
+    }
+}
