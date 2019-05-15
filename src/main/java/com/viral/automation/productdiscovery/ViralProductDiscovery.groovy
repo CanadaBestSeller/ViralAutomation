@@ -8,9 +8,10 @@ import geb.Page
 
 class ViralProductDiscovery {
 
-    static Browser discoverAndRecord(discoverTerm, productDiscoveryResults, int numberOfPagesToTranscribe) {
+    static Browser discoverAndRecord(
+            String discoverTerm, String presetName, int numberOfPagesToTranscribe, List<String> productDiscoveryResults) {
 
-        def params = [marketplace: "US", discoverTerm: discoverTerm]
+        def params = [marketplace: "US", discoverTerm: discoverTerm, presetName: presetName]
         Log.info "Discovering products with $params..."
 
         def browser = ChromeBrowserProvider.get()
