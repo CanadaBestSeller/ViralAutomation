@@ -16,7 +16,8 @@ class ViralLogin {
             Thread.sleep(2_000)
             $("input.signIn__input.null", 0).value(email)
             $("input.signIn__input.null", 1).value(password)
-            $("button.signIn__button", 0).click()
+
+            waitFor(30, message:"Clicking login button...") { $("button.signIn__button", 0).click() }
         }
 
         Log.success "Logged in!"

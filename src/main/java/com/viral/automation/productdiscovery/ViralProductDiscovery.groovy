@@ -9,7 +9,7 @@ import geb.Page
 class ViralProductDiscovery {
 
     static Browser discoverAndRecord(
-            String discoverTerm, String presetName, int numberOfPagesToTranscribe, List<String> productDiscoveryResults) {
+            String discoverTerm, String presetName, int numberOfPagesToTranscribe, Set<String> productDiscoveryResults) {
 
         def params = [marketplace: "US", discoverTerm: discoverTerm, presetName: presetName]
         Log.info "***** Discovering products with $params *****\n"
@@ -48,12 +48,12 @@ class KeywordResultModule extends Module {
         nextButton { $("button.btn-next", 0) }
     }
 
-    def void open() {
+    void open() {
         waitFor(30) { listings }
         waitFor(30) { listings.every {it != ""} }
     }
 
-    def transcribe(final List<String> productDiscoveryResults, final int numberOfPagesToTranscribe) {
+    def transcribe(final Set<String> productDiscoveryResults, final int numberOfPagesToTranscribe) {
         for (int i = 0; i < numberOfPagesToTranscribe; i++) {
             productDiscoveryResults.addAll(listings)
             waitFor(5, message:"Clicking next button...") { nextButton.click() }

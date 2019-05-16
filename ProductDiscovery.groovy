@@ -5,6 +5,8 @@
  *
  * This file is for bash only. It's an entry point for bash which can be execute with the following command:
  * groovy --classpath "./src/main/java" ProductDiscovery.groovy <terms.csv/term> <preset-name> <pages-to-transcribe>
+ * If you want to use a file containing a list of terms to search, there are example files in the folder "product_discovery_terms"
+ * e.g. groovy --classpath "./src/main/java" ProductDiscovery.groovy 'product_discovery_terms/test.terms' low-barrier-v1 3
  *
  * You can execute Product Discovery with an Intellij target as well (which comes with debugging capabilities).
  * However, the entry point is a different file:
@@ -43,8 +45,10 @@ class ProductDiscovery {
         final String PRESET_NAME = args[1]
         final String PAGES_TO_TRANSCRIBE = args[2]
 
-        final String discoverResults = executeProductDiscovery(USERNAME, PASSWORD, SEARCH_TERM, PRESET_NAME, PAGES_TO_TRANSCRIBE)
-        print discoverResults
+        final Set<String> discoverResults = executeProductDiscovery(USERNAME, PASSWORD, SEARCH_TERM, PRESET_NAME, PAGES_TO_TRANSCRIBE)
+        final String resultsFileName = writeFile(discoverResults)
+
+        Log.success("Product Discovery executed successfully! Results @ ${resultsFileName}")
     }
 
     private static exitIfInsufficientArguments(String... args) {
@@ -56,17 +60,20 @@ class ProductDiscovery {
     }
 
     private static getCredentials() {
-        final String[] credentials = new File("./david.credentials").text.split('\n')
-        credentials
+        return new File("./david.credentials").text.split('\n')
     }
 
     private static void clearScreen() {
         for (int i = 0; i < 50; ++i) System.out.println();
     }
 
-    static void writeFile(file) {
+    static String writeFile(Set<String> discoverResults) {
         final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
-        def output = new File("./product_discovery_result_" + now + ".txt")
-        output.write("LOL")
+        final String fileName = "./product_discovery_result_" + now + ".result"
+        def output = new File(fileName)
+        for (String result : discoverResults) {
+            output.append(result + "\n")
+        }
+        return fileName
     }
 }

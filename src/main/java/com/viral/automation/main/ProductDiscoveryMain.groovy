@@ -20,7 +20,7 @@ class ProductDiscoveryMain {
     }
 
     // This is a method serving a different file (the endpoint for bash). In bash we return the result to be written to a file.
-    static String executeProductDiscovery(
+    static Set<String> executeProductDiscovery(
             final String email,
             final String password,
             final String termOrFilename,
@@ -29,7 +29,7 @@ class ProductDiscoveryMain {
     ) {
         final Set<String> terms = resolveInput(termOrFilename)
 
-        final List<String> productDiscoveryResults = new ArrayList<>()
+        final Set<String> productDiscoveryResults = new HashSet<>()
 
         final List<Browser> browsers = new ArrayList<>()
         browsers.add ViralLogin.launch(email, password)

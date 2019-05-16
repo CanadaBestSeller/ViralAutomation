@@ -3,4 +3,5 @@
 *.DS_STORE
 target
 *.credentials
+*.result
 
