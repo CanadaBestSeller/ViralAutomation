@@ -13,10 +13,9 @@ class ProductDiscoveryMain {
         final String PASSWORD = args[1]
 
         final String TERM = args[2]
-        final String PRESET_NAME = args[3]
-        final String PAGES_TO_TRANSCRIBE = args[4]
+        final String PAGES_TO_TRANSCRIBE = args[3]
 
-        print executeProductDiscovery(EMAIL, PASSWORD, TERM, PRESET_NAME, PAGES_TO_TRANSCRIBE)
+        print executeProductDiscovery(EMAIL, PASSWORD, TERM, PAGES_TO_TRANSCRIBE)
     }
 
     // This is a method serving a different file (the endpoint for bash). In bash we return the result to be written to a file.
@@ -24,7 +23,6 @@ class ProductDiscoveryMain {
             final String email,
             final String password,
             final String termOrFilename,
-            final String presetName,
             final String pagesToTranscribe
     ) {
         final Set<String> terms = resolveInput(termOrFilename)
@@ -34,7 +32,7 @@ class ProductDiscoveryMain {
         final List<Browser> browsers = new ArrayList<>()
         browsers.add ViralLogin.launch(email, password)
         for (String term : terms) {
-            browsers.add ViralProductDiscovery.discoverAndRecord(term, presetName, pagesToTranscribe.toInteger(), productDiscoveryResults)
+            browsers.add ViralProductDiscovery.discoverAndRecord(term, pagesToTranscribe.toInteger(), productDiscoveryResults)
         }
         browsers.each { it.quit() }
         return productDiscoveryResults

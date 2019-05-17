@@ -3,6 +3,7 @@ package com.viral.automation.authentication
 import com.viral.automation.main.ChromeBrowserProvider
 import com.viral.automation.main.Log
 import geb.Browser
+import geb.Page
 
 class ViralLogin {
 
@@ -11,9 +12,18 @@ class ViralLogin {
 
         def window = ChromeBrowserProvider.get()
         window.drive {
-            go "https://viral-launch.com/sellers/signIn.html"
+            to ViralLoginPage
             waitFor { $("button.signIn__button").isDisplayed() }
-            Thread.sleep(2_000)
+            Thread.sleep(3_000)
+
+            try {
+                if (annoyingPopup) {
+                    waitFor(30, message: "Closing annoying login popup...") { annoyingPopupCloseButton.click() }
+                }
+            } catch (Exception e) {
+                print e
+            }
+
             $("input.signIn__input.null", 0).value(email)
             $("input.signIn__input.null", 1).value(password)
 
@@ -23,6 +33,15 @@ class ViralLogin {
         Log.success "Logged in!"
 
         return window
+    }
+}
+
+class ViralLoginPage extends Page {
+    static url = "https://viral-launch.com/sellers/signIn.html"
+
+    static content = {
+        annoyingPopup { $("div.listbuilder-popup-scale") }
+        annoyingPopupCloseButton { $("div.sumome-react-wysiwyg-close-button", 0) }
     }
 }
 

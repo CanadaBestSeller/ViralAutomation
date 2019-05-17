@@ -4,15 +4,15 @@
  * move driver to '/usr/local/bin/chromedriver'
  *
  * This file is for bash only. It's an entry point for bash which can be execute with the following command:
- * groovy --classpath "./src/main/java" ProductDiscovery.groovy <terms.csv/term> <preset-name> <pages-to-transcribe>
+ * groovy --classpath "./src/main/java" ProductDiscovery.groovy <terms.csv/term> <pages-to-transcribe>
  * If you want to use a file containing a list of terms to search, there are example files in the folder "product_discovery_terms"
- * e.g. groovy --classpath "./src/main/java" ProductDiscovery.groovy 'product_discovery_terms/test.terms' low-barrier-v1 3
+ * e.g. groovy --classpath "./src/main/java" ProductDiscovery.groovy 'product_discovery_terms/test.terms'
  *
  * You can execute Product Discovery with an Intellij target as well (which comes with debugging capabilities).
  * However, the entry point is a different file:
  * Target's Main class: com.viral.automation.ProductDiscoveryMain
  * Target's Working directory: (root of git folder, e.g. /Users/lidavid/workspace/ViralAutomation
- * Target's Program arguments: <viral-launch-email> <viral-launch-password> <terms.csv/term> <preset-name> <pages-to-transcribe>
+ * Target's Program arguments: <viral-launch-email> <viral-launch-password> <terms.csv/term> <pages-to-transcribe>
  *
  * Output of this groovy file will be in this top-level folder.
  *
@@ -42,19 +42,18 @@ class ProductDiscovery {
         final String PASSWORD = credentials[1]
 
         final String SEARCH_TERM = args[0]
-        final String PRESET_NAME = args[1]
-        final String PAGES_TO_TRANSCRIBE = args[2]
+        final String PAGES_TO_TRANSCRIBE = args[1]
 
-        final Set<String> discoverResults = executeProductDiscovery(USERNAME, PASSWORD, SEARCH_TERM, PRESET_NAME, PAGES_TO_TRANSCRIBE)
+        final Set<String> discoverResults = executeProductDiscovery(USERNAME, PASSWORD, SEARCH_TERM, PAGES_TO_TRANSCRIBE)
         final String resultsFileName = writeFile(discoverResults)
 
         Log.success("Product Discovery executed successfully! Results @ ${resultsFileName}")
     }
 
     private static exitIfInsufficientArguments(String... args) {
-        if (args.length != 3) {
+        if (args.length != 2) {
             clearScreen()
-            Log.error "ProductDiscovery.groovy <terms.csv/term> <preset-name> <pages-to-transcribe>"
+            Log.error "ProductDiscovery.groovy <terms.csv/term> <pages-to-transcribe>"
             System.exit(0)
         }
     }
@@ -64,7 +63,7 @@ class ProductDiscovery {
     }
 
     private static void clearScreen() {
-        for (int i = 0; i < 50; ++i) System.out.println();
+        for (int i = 0; i < 50; ++i) System.out.println()
     }
 
     static String writeFile(Set<String> discoverResults) {

@@ -8,22 +8,23 @@ import geb.Page
 
 class ViralProductDiscovery {
 
-    static Browser discoverAndRecord(
-            String discoverTerm, String presetName, int numberOfPagesToTranscribe, Set<String> productDiscoveryResults) {
+    static Browser discoverAndRecord(String discoverTerm, int numberOfPagesToTranscribe, Set<String> productDiscoveryResults) {
 
-        def params = [marketplace: "US", discoverTerm: discoverTerm, presetName: presetName]
+        def params = [marketplace: "US", discoverTerm: discoverTerm]
         Log.info "***** Discovering products with $params *****\n"
 
         def browser = ChromeBrowserProvider.get()
         browser.drive {
 
             to ViralProductDiscoveryPage
-
             waitFor(30) { keywordField }
+
+            presets.openLastPreset()  // See PresetsModule for documentation
+
             keywordField.value(discoverTerm)  // set value of keyword field to discoverTerm
             waitFor(30, message:"Clicking submit button...") { submitButton.click() }
 
-            keywordResults.open()
+            keywordResults.open()  // Sort results by salesToReview descending
             keywordResults.transcribe(productDiscoveryResults, numberOfPagesToTranscribe)
         }
 
@@ -38,6 +39,29 @@ class ViralProductDiscoveryPage extends Page {
         keywordField { $(placeholder: 'Keyword Phrase', 0) }
         submitButton { $("button.el-button.filter-button.el-button--warning.is-plain", 2) }
         keywordResults { module KeywordResultModule }
+        presets { module PresetsModule }
+    }
+}
+
+/**
+ * We are using some keyboard magic to select the last preset in the preset menu. Some of the parameters we're controlling are:
+ * - Keyword Contains: This we're defaulting to EMPTY because this way, ViralLaunch won't search
+ * (You can attach a keyword to a preset, if you do, then every time a preset is selected, ViralLaunch searches the word.
+ * We want to avoid this since we want to input search terms via automation).
+ * - Average price range
+ * - Average review count range
+ * - Average net profit range
+ * - Estimated search volume range
+ */
+class PresetsModule extends Module {
+    static content = {
+        dropdownButton { $("input", 1, placeholder: "Select a Preset") }
+    }
+
+    void openLastPreset() { // It's too time-consuming to code to open a specific preset for now, let's just open the last one.
+        waitFor(30, message: "Opening preset dropdown...") { dropdownButton.click() }
+        interact { sendKeys(org.openqa.selenium.Keys.UP) }
+        interact { sendKeys(org.openqa.selenium.Keys.RETURN) }
     }
 }
 
@@ -46,18 +70,25 @@ class KeywordResultModule extends Module {
     static content = {
         listings { $("span.keyword-item__name.mb5.trunc-text.result__title")*.text() }
         nextButton { $("button.btn-next", 0) }
+        sortBySalesToReviewsButton { $("div.text-center.header-item.column-lg", 4) }
     }
 
     void open() {
-        waitFor(30) { listings }
-        waitFor(30) { listings.every {it != ""} }
+        waitForListingToLoad()
+        waitFor(30) { sortBySalesToReviewsButton.click() }  // First click sorts ascending
+        waitFor(30) { sortBySalesToReviewsButton.click() }  // Second click sorts descending
+    }
+
+    void waitForListingToLoad() {
+        waitFor(60) { listings }
+        waitFor(60) { listings.any {it != ""} }
     }
 
     def transcribe(final Set<String> productDiscoveryResults, final int numberOfPagesToTranscribe) {
         for (int i = 0; i < numberOfPagesToTranscribe; i++) {
             productDiscoveryResults.addAll(listings)
             waitFor(5, message:"Clicking next button...") { nextButton.click() }
-            open()
+            waitForListingToLoad()
         }
     }
 }
