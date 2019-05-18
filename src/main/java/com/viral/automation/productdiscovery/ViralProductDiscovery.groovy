@@ -24,8 +24,11 @@ class ViralProductDiscovery {
             keywordField.value(discoverTerm)  // set value of keyword field to discoverTerm
             waitFor(30, message:"Clicking submit button...") { submitButton.click() }
 
-            keywordResults.open()  // Sort results by salesToReview descending
-            keywordResults.transcribe(productDiscoveryResults, numberOfPagesToTranscribe)
+            try {
+                keywordResults.transcribe(productDiscoveryResults, numberOfPagesToTranscribe)
+            } catch (Throwable t) {
+                Log.error("Failed to retrieve keyword results for ${discoverTerm}: " + t.toString())
+            }
         }
 
         return browser
@@ -73,22 +76,21 @@ class KeywordResultModule extends Module {
         sortBySalesToReviewsButton { $("div.text-center.header-item.column-lg", 4) }
     }
 
-    void open() {
+    def transcribe(final Set<String> productDiscoveryResults, final int numberOfPagesToTranscribe) {
         waitForListingToLoad()
+
         waitFor(30) { sortBySalesToReviewsButton.click() }  // First click sorts ascending
         waitFor(30) { sortBySalesToReviewsButton.click() }  // Second click sorts descending
-    }
 
-    void waitForListingToLoad() {
-        waitFor(60) { listings }
-        waitFor(60) { listings.any {it != ""} }
-    }
-
-    def transcribe(final Set<String> productDiscoveryResults, final int numberOfPagesToTranscribe) {
         for (int i = 0; i < numberOfPagesToTranscribe; i++) {
             productDiscoveryResults.addAll(listings)
             waitFor(5, message:"Clicking next button...") { nextButton.click() }
             waitForListingToLoad()
         }
+    }
+
+    void waitForListingToLoad() {
+        waitFor(60) { listings }
+        waitFor(60) { listings.any {it != ""} }
     }
 }

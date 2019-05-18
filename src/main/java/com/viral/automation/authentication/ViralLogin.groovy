@@ -20,8 +20,8 @@ class ViralLogin {
                 if (annoyingPopup) {
                     waitFor(30, message: "Closing annoying login popup...") { annoyingPopupCloseButton.click() }
                 }
-            } catch (Exception e) {
-                print e
+            } catch (Throwable t) {
+                Log.debug(t.toString())
             }
 
             $("input.signIn__input.null", 0).value(email)
