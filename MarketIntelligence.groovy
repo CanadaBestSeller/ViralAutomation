@@ -46,7 +46,9 @@ class MarketIntelligence {
         final String SEARCH_TERM = args[0]
 
         final LinkedHashMap analyses = MarketIntelligenceMain.executeMarketIntelligence(USERNAME, PASSWORD, SEARCH_TERM)
-        ViralMarketIntelligenceWriter.writeAnalysisToFile(getCsvFileName(), analyses)
+        final String fileName = ViralMarketIntelligenceWriter.writeAnalysisIntoCsv(getCsvFileName(), analyses)
+
+        Log.success("Market Intelligence executed successfully! Results @ ${fileName}")
     }
 
     private static exitIfInsufficientArguments(String... args) {
@@ -69,26 +71,5 @@ class MarketIntelligence {
     private static String getCsvFileName() {
         final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
         return "./market_intelligence_result_" + now + ".csv"
-    }
-
-    static writeAnalysisToFile(final String filePath, final LinkedHashMap analyses) {
-        try {
-            CSVPrinter printer = new CSVPrinter(new FileWriter(filePath), CSVFormat.EXCEL)
-            printer.printRecord(getHeaders(analyses))
-
-            for (LinkedHashMap.Entry entry : analyses.entrySet()) {
-                printer.printRecord(entry.getValue())
-                printer.println()
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace()
-        }
-    }
-
-    static Collection getHeaders(final LinkedHashMap analyses) {
-        final LinkedHashMap.Entry<String, LinkedHashMap> firstEntry = analyses.entrySet()[0]
-        final LinkedHashMap firstAnalysis = firstEntry.getValue()
-        return firstAnalysis.values()
     }
 }

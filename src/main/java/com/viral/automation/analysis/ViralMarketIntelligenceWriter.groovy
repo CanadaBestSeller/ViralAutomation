@@ -5,19 +5,19 @@ import org.apache.commons.csv.CSVPrinter
 
 class ViralMarketIntelligenceWriter {
 
-    static writeAnalysisIntoCsv(final String filePath, final LinkedHashMap analyses) {
+    static String writeAnalysisIntoCsv(final String filePath, final LinkedHashMap analyses) {
         final CSVPrinter printer = new CSVPrinter(new FileWriter(filePath), CSVFormat.EXCEL)
         try {
             printer.printRecord(getHeaders(analyses))
             for (LinkedHashMap itemAnalysis: analyses.values()) {
                 printer.printRecord(itemAnalysis.values())
-                printer.println()
             }
         } catch (IOException e) {
             e.printStackTrace()
         } finally {
             printer.close()
         }
+        return filePath
     }
 
     private static Set getHeaders(final LinkedHashMap analyses) {

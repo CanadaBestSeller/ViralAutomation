@@ -1,7 +1,6 @@
 package com.viral.automation.main
 
 import com.viral.automation.analysis.ViralMarketIntelligenceAnalyzer
-import com.viral.automation.analysis.ViralMarketIntelligenceWriter
 import com.viral.automation.authentication.ViralLogin
 import com.viral.automation.marketintelligence.ViralMarketIntelligence
 import geb.Browser
@@ -15,9 +14,7 @@ class MarketIntelligenceMain {
         final String PASSWORD = args[1]
         final String TERM = args[2]
 
-//        print executeMarketIntelligence(EMAIL, PASSWORD, TERM)
-        final LinkedHashMap intelligence = executeMarketIntelligence(EMAIL, PASSWORD, TERM)
-        ViralMarketIntelligenceWriter.writeAnalysisIntoCsv("./LOL2.csv", intelligence)
+        print executeMarketIntelligence(EMAIL, PASSWORD, TERM)
    }
 
     // This is a method serving a different file (the endpoint for bash). In bash we return the result to be written to a file.
@@ -42,7 +39,7 @@ class MarketIntelligenceMain {
         try {
             final File fileContainingTerms = new File(termOrFilename)
             final String rawTerms = fileContainingTerms.getText('UTF-8')
-            return rawTerms.split('\n') as Set
+            return rawTerms.split('\n')
         } catch (FileNotFoundException e) {
             return Arrays.asList(termOrFilename)
         }
