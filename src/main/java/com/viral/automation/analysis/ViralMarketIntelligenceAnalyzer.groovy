@@ -44,6 +44,7 @@ class ViralMarketIntelligenceAnalyzer {
     private static analyzeProduct(productName, rawProductInfo) {
 
         def productAnalysis = [:]
+        productAnalysis['product_name'] = productName
 
         def page1AverageSales = toDouble(rawProductInfo['raw_details_page1AverageSales'])
         def landedCost = toDouble(rawProductInfo['raw_calc_landedUnitCost'])

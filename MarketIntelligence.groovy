@@ -18,14 +18,20 @@
  * Dependencies need to be declared here, as well as in the POM file.
  * By doing so, you will be able to execute this file via either bash or IntelliJ.
  */
+
+
+import com.viral.automation.analysis.ViralMarketIntelligenceWriter
+import com.viral.automation.main.Log
 @Grapes([
         @Grab("org.gebish:geb-core:2.3.1"),
         @Grab("org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"),
-        @Grab("org.seleniumhq.selenium:selenium-support:3.14.0")
+        @Grab("org.seleniumhq.selenium:selenium-support:3.14.0"),
+        @Grab("org.apache.commons:commons-csv:1.6")
 ])
 
 import com.viral.automation.main.MarketIntelligenceMain
-import com.viral.automation.main.Log
+import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVPrinter
 
 class MarketIntelligence {
 
@@ -39,7 +45,8 @@ class MarketIntelligence {
         final String PASSWORD = credentials[1]
         final String SEARCH_TERM = args[0]
 
-        MarketIntelligenceMain.main(USERNAME, PASSWORD, SEARCH_TERM)
+        final LinkedHashMap analyses = MarketIntelligenceMain.executeMarketIntelligence(USERNAME, PASSWORD, SEARCH_TERM)
+        ViralMarketIntelligenceWriter.writeAnalysisToFile(getCsvFileName(), analyses)
     }
 
     private static exitIfInsufficientArguments(String... args) {
@@ -59,9 +66,29 @@ class MarketIntelligence {
         for (int i = 0; i < 50; ++i) System.out.println();
     }
 
-    static void writeFile(file) {
+    private static String getCsvFileName() {
         final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
-        def output = new File("./market_intelligence_result_" + now + ".txt")
-        output.write("LOL")
+        return "./market_intelligence_result_" + now + ".csv"
+    }
+
+    static writeAnalysisToFile(final String filePath, final LinkedHashMap analyses) {
+        try {
+            CSVPrinter printer = new CSVPrinter(new FileWriter(filePath), CSVFormat.EXCEL)
+            printer.printRecord(getHeaders(analyses))
+
+            for (LinkedHashMap.Entry entry : analyses.entrySet()) {
+                printer.printRecord(entry.getValue())
+                printer.println()
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace()
+        }
+    }
+
+    static Collection getHeaders(final LinkedHashMap analyses) {
+        final LinkedHashMap.Entry<String, LinkedHashMap> firstEntry = analyses.entrySet()[0]
+        final LinkedHashMap firstAnalysis = firstEntry.getValue()
+        return firstAnalysis.values()
     }
 }
