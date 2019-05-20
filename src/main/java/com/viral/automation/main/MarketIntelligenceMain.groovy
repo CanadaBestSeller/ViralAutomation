@@ -10,6 +10,11 @@ import static groovy.json.JsonOutput.toJson
 
 class MarketIntelligenceMain {
 
+    private static final BLACKLISTED_TERMS = [
+            "nike",
+            "channel"
+    ]
+
     // This is an entry point for IntelliJ target only
     static void main(String... args) {
 
@@ -62,11 +67,15 @@ class MarketIntelligenceMain {
     }
 
     static boolean isValid(final String term) {
-        def blacklistedTerms = [
-                "nike",
-                "channel"
-        ]
-        !blacklistedTerms.any { term.contains(it) }
+        if (term == null || term.isEmpty() || term.trim().isEmpty()) {
+            return false
+        }
+
+        if (BLACKLISTED_TERMS.any { term.contains(it) }) {
+            return false
+        }
+
+        return true
     }
 
     static List<String> resolveInput(final String termOrFilename) {

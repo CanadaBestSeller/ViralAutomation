@@ -53,6 +53,8 @@ class ViralMarketIntelligenceAnalyzer {
         def averageCost = landedCost + amazonFees + referralFees
         def averageProfit = toDouble(rawProductInfo['raw_calc_profitPerUnit'])
 
+        productAnalysis['Tip'] = rawProductInfo['raw_analysis_tipContent']
+
         productAnalysis['analysis_averagePrice'] = averagePrice
         productAnalysis['analysis_averageCost'] = averageCost
         productAnalysis['analysis_2.5xInventoryCost'] = page1AverageSales * averageCost * 2.5
