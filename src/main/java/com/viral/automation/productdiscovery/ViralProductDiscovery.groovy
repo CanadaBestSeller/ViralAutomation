@@ -6,6 +6,8 @@ import geb.Browser
 import geb.Module
 import geb.Page
 
+import static org.codehaus.groovy.runtime.StackTraceUtils.*
+
 class ViralProductDiscovery {
 
     static Browser discoverAndRecord(String discoverTerm, int numberOfPagesToTranscribe, Set<String> productDiscoveryResults) {
@@ -17,17 +19,20 @@ class ViralProductDiscovery {
         browser.drive {
 
             to ViralProductDiscoveryPage
-            waitFor(30) { keywordField }
+            waitFor(30, massage: "Waiting for keywordField") { keywordField }
 
             presets.openLastPreset()  // See PresetsModule for documentation
 
             keywordField.value(discoverTerm)  // set value of keyword field to discoverTerm
-            waitFor(30, message:"Clicking submit button...") { submitButton.click() }
+            waitFor(30, message: "Clicking submit button...") { submitButton.click() }
 
             try {
                 keywordResults.transcribe(productDiscoveryResults, numberOfPagesToTranscribe)
+
             } catch (Throwable t) {
-                Log.error("Failed to retrieve keyword results for ${discoverTerm}: " + t.toString())
+                final StringWriter stringWriter = new StringWriter()
+                t.printStackTrace(new PrintWriter(stringWriter))
+                Log.error("Failed to retrieve keyword results for ${discoverTerm}: " + stringWriter.toString())
             }
         }
 
@@ -79,8 +84,8 @@ class KeywordResultModule extends Module {
     def transcribe(final Set<String> productDiscoveryResults, final int numberOfPagesToTranscribe) {
         waitForListingToLoad()
 
-        waitFor(30) { sortBySalesToReviewsButton.click() }  // First click sorts ascending
-        waitFor(30) { sortBySalesToReviewsButton.click() }  // Second click sorts descending
+        waitFor(30, message: "Sort salesToReview ASC") { sortBySalesToReviewsButton.click() }  // First click sorts ascending
+        waitFor(30, message: "Sort salesToReview DESC") { sortBySalesToReviewsButton.click() }  // Second click sorts descending
 
         for (int i = 0; i < numberOfPagesToTranscribe; i++) {
             productDiscoveryResults.addAll(listings)

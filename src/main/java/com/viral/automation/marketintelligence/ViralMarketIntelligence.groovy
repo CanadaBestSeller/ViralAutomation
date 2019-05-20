@@ -42,37 +42,47 @@ class ViralMarketIntelligence {
         def browser = ChromeBrowserProvider.get()
         browser.drive {
 
-            to(requestParams, ViralMarketIntelligencePage)
+            try {
 
-            waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { header.displayed }
-            Log.info "Market intelligence page started loading..."
+                to(requestParams, ViralMarketIntelligencePage)
 
-            waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !spinner.displayed }
-            Log.info "Market intelligence page fully loaded!"
+                waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { header.displayed }
+                Log.info "Market intelligence page started loading..."
 
-            standardView.open() // Due to AJAX, we must click to open the window to populate the data
-            standardView.transcribe(marketIntelligenceResult)
+                waitFor(PAGE_LOAD_TIMEOUT_IN_SECONDS) { !spinner.displayed }
+                Log.info "Market intelligence page fully loaded!"
 
-            detailedView.open() // Due to AJAX, we must click to open the window to populate the data
-            detailedView.transcribe(marketIntelligenceResult)
+                standardView.open() // Due to AJAX, we must click to open the window to populate the data
+                standardView.transcribe(marketIntelligenceResult)
 
-            marketTrendsView.open() // Due to AJAX, we must click to open the window to populate the data
-            marketTrendsView.transcribe(marketIntelligenceResult)
+                detailedView.open() // Due to AJAX, we must click to open the window to populate the data
+                detailedView.transcribe(marketIntelligenceResult)
 
-            analysisView.open() // Due to AJAX, we must click to open the window to populate the data
-            analysisView.transcribe(marketIntelligenceResult)
+                marketTrendsView.open() // Due to AJAX, we must click to open the window to populate the data
+                marketTrendsView.transcribe(marketIntelligenceResult)
 
-            costCalculatorView.open() // Due to AJAX, we must click to open the window to populate the data
-            costCalculatorView.transcribe(marketIntelligenceResult)
+                analysisView.open() // Due to AJAX, we must click to open the window to populate the data
+                analysisView.transcribe(marketIntelligenceResult)
 
-            if (estimatedSearchVolume) { // Do this last. Takes time to load. Sometimes the search volume isn't provided
-                marketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
+                costCalculatorView.open() // Due to AJAX, we must click to open the window to populate the data
+                costCalculatorView.transcribe(marketIntelligenceResult)
+
+                if (estimatedSearchVolume) { // Do this last. Takes time to load. Sometimes the search volume isn't provided
+                    marketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
+                }
+
+                Log.info("Analyzed!")
+                Log.debug("Market intelligence RAW result:\n" + prettyPrint(toJson(marketIntelligenceResult)))
+
+                marketIntelligenceResults[searchTerm] = marketIntelligenceResult
+
+            } catch (Throwable t) {
+                final StringWriter stringWriter = new StringWriter()
+                t.printStackTrace(new PrintWriter(stringWriter))
+                Log.error("Failed to gather market intelligence for ${searchTerm}: " + stringWriter.toString())
+
             }
 
-            Log.info("Analyzed!")
-            Log.debug("Market intelligence RAW result:\n" + prettyPrint(toJson(marketIntelligenceResult)))
-
-            marketIntelligenceResults[searchTerm] = marketIntelligenceResult
         }
 
         return browser
