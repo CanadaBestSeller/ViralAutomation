@@ -43,8 +43,7 @@ class ViralMarketIntelligenceAnalyzer {
 
     private static analyzeProduct(productName, rawProductInfo) {
 
-        def productAnalysis = [:]
-        productAnalysis['product_name'] = productName
+        LinkedHashMap productAnalysis = [:]
 
         def page1AverageSales = toDouble(rawProductInfo['raw_details_page1AverageSales'])
         def landedCost = toDouble(rawProductInfo['raw_calc_landedUnitCost'])
@@ -90,8 +89,7 @@ class ViralMarketIntelligenceAnalyzer {
 
         Log.info("\n" + productName.toUpperCase() + ":\n" + prettyPrint(toJson(productAnalysis)))
 
-        ViralMarketIntelligenceProductScorer.calculateFinalScore(productAnalysis)
-        return productAnalysis
+        return ViralMarketIntelligenceProductScorer.addFinalScoreAndReasons(productAnalysis, productName)
     }
 
     private static List<Double> toDoubleList(final List<String> input) {

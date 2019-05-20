@@ -27,7 +27,11 @@ class MarketIntelligenceMain {
         final List<Browser> browsers = new ArrayList<>()
         browsers.add ViralLogin.launch(email, password)
         for (String term : terms) {
-            browsers.add ViralMarketIntelligence.searchAndRecord(term, marketIntelligenceResults)
+            if (isValid(term)) {
+                browsers.add ViralMarketIntelligence.searchAndRecord(term, marketIntelligenceResults)
+            } else {
+                addAsInvalidEntry(term, marketIntelligenceResults)
+            }
         }
         browsers.each { it.quit() }
 
