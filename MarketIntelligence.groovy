@@ -30,8 +30,6 @@ import com.viral.automation.main.Log
 ])
 
 import com.viral.automation.main.MarketIntelligenceMain
-import org.apache.commons.csv.CSVFormat
-import org.apache.commons.csv.CSVPrinter
 
 class MarketIntelligence {
 

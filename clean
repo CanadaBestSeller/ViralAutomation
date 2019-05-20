@@ -1,2 +1,2 @@
-rm *.csv
-rm *.result
+rm *.csv > /dev/null 2>&1
+rm *.result > /dev/null 2>&1
