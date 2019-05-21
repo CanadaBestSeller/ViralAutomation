@@ -5,8 +5,7 @@ import com.viral.automation.main.Log
 import geb.Browser
 import geb.Module
 import geb.Page
-
-import static org.codehaus.groovy.runtime.StackTraceUtils.*
+import geb.waiting.WaitTimeoutException
 
 class ViralProductDiscovery {
 
@@ -89,8 +88,13 @@ class KeywordResultModule extends Module {
 
         for (int i = 0; i < numberOfPagesToTranscribe; i++) {
             productDiscoveryResults.addAll(listings)
-            waitFor(5, message:"Clicking next button...") { nextButton.click() }
-            waitForListingToLoad()
+            try {
+                waitFor(5, message: "Clicking next button...") { nextButton.click() }
+                waitForListingToLoad()
+            } catch (WaitTimeoutException e) {
+                Log.info("Reached end of product discovery results. Cannot transcibe ${numberOfPagesToTranscribe} pages because there are only ${i}")
+                return
+            }
         }
     }
 
