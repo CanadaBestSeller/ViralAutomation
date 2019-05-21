@@ -5,16 +5,13 @@ import com.viral.automation.authentication.ViralLogin
 import com.viral.automation.marketintelligence.ViralMarketIntelligence
 import geb.Browser
 
-import static groovy.json.JsonOutput.prettyPrint
-import static groovy.json.JsonOutput.toJson
-
 class MarketIntelligenceMain {
 
     private static final BLACKLISTED_TERMS = // case-insensitive
             [
                "Aquaphor", "Alani Nu", "Adidas", "Amoxicillin", "Avengers", "Allegra", "American Ninja Warrior", "Alvababy", "Amika",
                "biore", "Bey Blade", "Beyblade", "Bablades", "Ben 10", "Bayblades", "Blade Blade",
-               "charizard", "channel", "Coq10", "Cialis", "Clinique Acne", "Calvin Klein", "Clorox", "Coast Flashlight", "Cottonelle", "Crest ",
+               "charizard", "channel", "Coq10", "Cialis", "Clinique", "Calvin Klein", "Clorox", "Coast Flashlight", "Cottonelle", "Crest ",
                "Disney", "Dixie", "Dreft", "Dove shampoo",
                // e
                "Funko", "Fortnite", "Fabreeze",
@@ -34,7 +31,7 @@ class MarketIntelligenceMain {
                "Tampax", "Torino Pro", "tide ", "Taylormade", "Thompson Tee", "The Kind Pen",
                "Ubiquinol", "Under Armour", "UnderArmour",
                "Vera Bradley",
-               "Warhammer", "Wolverine", "Woodland",
+               "Warhammer", "Wolverine", "Woodland", "Windex",
                "xbox",
                // y
                "Zyrtec", "Zantac",
@@ -124,6 +121,9 @@ class MarketIntelligenceMain {
     }
 
     static List<String> resolveInput(final String termOrFilename) {
+        if (termOrFilename.contains(',')) {
+            return termOrFilename.split(',')*.trim()
+        }
         try {
             final File fileContainingTerms = new File(termOrFilename)
             final String rawTerms = fileContainingTerms.getText('UTF-8')
