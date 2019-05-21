@@ -1,5 +1,6 @@
 package com.viral.automation.marketintelligence
 
+import com.viral.automation.analysis.ViralMarketIntelligenceAnalyzer
 import com.viral.automation.main.ChromeBrowserProvider
 import com.viral.automation.main.Log
 import com.viral.automation.marketintelligence.modules.*
@@ -31,13 +32,13 @@ class ViralMarketIntelligence {
 
     public static final int PAGE_LOAD_TIMEOUT_IN_SECONDS = 45
 
-    static Browser searchAndRecord(searchTerm, marketIntelligenceResults) {
+    static Browser searchAndRecord(searchTerm, emptyMap, isTestMode) {
 
         def requestParams = [marketplace: "US", search: searchTerm]
         Log.info "Analyzing with $requestParams..."
 
         // Populate this map with final results
-        def marketIntelligenceResult = [:]
+        def rawMarketIntelligenceResult = [:]
 
         def browser = ChromeBrowserProvider.get()
         browser.drive {
@@ -53,28 +54,29 @@ class ViralMarketIntelligence {
                 Log.info "Market intelligence page fully loaded!"
 
                 standardView.open() // Due to AJAX, we must click to open the window to populate the data
-                standardView.transcribe(marketIntelligenceResult)
+                standardView.transcribe(rawMarketIntelligenceResult, isTestMode ? 5000 : 20_000) // in prod, wait 20 seconds for BSR information to populate
 
                 detailedView.open() // Due to AJAX, we must click to open the window to populate the data
-                detailedView.transcribe(marketIntelligenceResult)
+                detailedView.transcribe(rawMarketIntelligenceResult)
 
                 marketTrendsView.open() // Due to AJAX, we must click to open the window to populate the data
-                marketTrendsView.transcribe(marketIntelligenceResult)
+                marketTrendsView.transcribe(rawMarketIntelligenceResult)
 
                 analysisView.open() // Due to AJAX, we must click to open the window to populate the data
-                analysisView.transcribe(marketIntelligenceResult)
+                analysisView.transcribe(rawMarketIntelligenceResult)
 
                 costCalculatorView.open() // Due to AJAX, we must click to open the window to populate the data
-                costCalculatorView.transcribe(marketIntelligenceResult)
+                costCalculatorView.transcribe(rawMarketIntelligenceResult)
 
                 if (estimatedSearchVolume) { // Do this last. Takes time to load. Sometimes the search volume isn't provided
-                    marketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
+                    rawMarketIntelligenceResult['estimatedSearchVolume'] = estimatedSearchVolume.text()
                 }
 
                 Log.info("Analyzed!")
-                Log.debug("Market intelligence RAW result:\n" + prettyPrint(toJson(marketIntelligenceResult)))
+                Log.debug("Market intelligence RAW result:\n" + prettyPrint(toJson(rawMarketIntelligenceResult)))
 
-                marketIntelligenceResults[searchTerm] = marketIntelligenceResult
+                LinkedHashMap finalResult = ViralMarketIntelligenceAnalyzer.analyzeProduct(searchTerm, rawMarketIntelligenceResult)
+                finalResult.each { k, v -> emptyMap[k] = v }
 
             } catch (Throwable t) {
                 final StringWriter stringWriter = new StringWriter()
@@ -82,7 +84,6 @@ class ViralMarketIntelligence {
                 Log.error("Failed to gather market intelligence for ${searchTerm}: " + stringWriter.toString())
 
             }
-
         }
 
         return browser

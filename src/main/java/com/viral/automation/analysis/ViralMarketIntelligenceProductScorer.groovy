@@ -17,6 +17,8 @@ class ViralMarketIntelligenceProductScorer {
         LinkedHashMap o = [:]  // o stands for output, this is the map we're returning.
 
         o['Product Name'] = productName
+        Log.info("===== SCORE CALCULATION for ${productName} =====")
+
         o['Score'] = 0  // init with 0 as a placeholder for now, since LinkedHashMap keeps insertion order.
 
         // Predicates to be evaluated
@@ -29,7 +31,7 @@ class ViralMarketIntelligenceProductScorer {
         finalScore += evaluate(o, 'Unit Margin $5+', i['analysis_unitMargin'] >= 5, 1, 0)
         finalScore += evaluate(o, 'Profit Margin 40%+', i['analysis_unitMarginPercentage'] >= 40, 1, 0)
 
-        // This condition might  be too harsh. 5K profit for 25th percentile is a lot
+        // This condition might be too harsh. 5K profit for 25th percentile is a lot
         finalScore += evaluate(o, 'Most (75%) on page 1 - Profit $1500+', i['analysis_25PercentileMonthlyProfit'] >= 1500, 1, 0)
         finalScore += evaluate(o, 'Half on page 1 - Profit $3000+', i['analysis_medianMonthlyProfit'] >= 3000, 1, 0)
 
@@ -48,7 +50,7 @@ class ViralMarketIntelligenceProductScorer {
             o[entry.key] = entry.value
         }
 
-        Log.success("FINAL SCORE: ===== ${finalScore} =====")
+        Log.success("===== FINAL SCORE: ${finalScore} =====")
 
         return o
     }

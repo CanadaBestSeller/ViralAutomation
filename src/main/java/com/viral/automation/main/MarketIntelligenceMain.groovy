@@ -1,6 +1,6 @@
 package com.viral.automation.main
 
-import com.viral.automation.analysis.ViralMarketIntelligenceAnalyzer
+import com.viral.automation.analysis.ViralMarketIntelligenceWriter
 import com.viral.automation.authentication.ViralLogin
 import com.viral.automation.marketintelligence.ViralMarketIntelligence
 import geb.Browser
@@ -48,36 +48,55 @@ class MarketIntelligenceMain {
         final String PASSWORD = args[1]
         final String TERM = args[2]
 
-        final LinkedHashMap intelligence = executeMarketIntelligence(EMAIL, PASSWORD, TERM)
-        prettyPrint(toJson(intelligence))
+        executeMarketIntelligence(EMAIL, PASSWORD, TERM, true)  // IntelliJ target should always be test mode
    }
 
-    // This is a method serving a different file (the endpoint for bash). In bash we return the result to be written to a file.
     static LinkedHashMap executeMarketIntelligence(final String email, final String password, final String termOrFilename) {
+        return executeMarketIntelligence(email, password, termOrFilename, false)
+    }
 
-        final List<String> terms = resolveInput(termOrFilename)
-        // Comment above & uncomment below to test in IntlliJ using custom list of terms.
-        // final List<String> terms = Arrays.asList("rose gold cups", "nike", "maternity jeans")
+    // This is a method serving a different file (the endpoint for bash). In bash we return the result to be written to a file.
+    static void executeMarketIntelligence(final String email, final String password, final String termOrFilename, final boolean isTestMode) {
 
-        def marketIntelligenceResults = [:]
+        final List<String> terms = isTestMode ? Arrays.asList(termOrFilename, "nike", "rose gold cups") : resolveInput(termOrFilename)
+
+        def csvFilePath = getCsvFilePath()
+        final List<Browser> browsers = new ArrayList<>()
+
+        final List<String> validatedTerms = validateAndFilter(terms)
+        for (int i = 0; i < validatedTerms.size(); i++) {
+            def result = [:]
+            if (i == 0) {
+                browsers.add ViralLogin.launch(email, password)
+                browsers.add ViralMarketIntelligence.searchAndRecord(validatedTerms[i], result, isTestMode)
+                ViralMarketIntelligenceWriter.createFileAndWriteHeadersIntoCsv(csvFilePath, result)
+                ViralMarketIntelligenceWriter.appendAnalysisIntoCsv(csvFilePath, result)
+            } else {
+                browsers.add ViralMarketIntelligence.searchAndRecord(validatedTerms[i], result, isTestMode)
+                ViralMarketIntelligenceWriter.appendAnalysisIntoCsv(csvFilePath, result)
+            }
+            Log.success("${validatedTerms[i]} Market Intelligence results added to ${csvFilePath}")
+        }
+
+        browsers.each { it.quit() }
+
+        Log.success("ALL DONE! Market Intelligence executed successfully! Results @ ${csvFilePath}")
+    }
+
+    static List<String> validateAndFilter(terms) {
         def blacklistedTerms = []
 
-        final List<Browser> browsers = new ArrayList<>()
-        browsers.add ViralLogin.launch(email, password)
+        final List<String> result = new ArrayList<>()
         for (String term : terms) {
             if (isValid(term)) {
-                browsers.add ViralMarketIntelligence.searchAndRecord(term, marketIntelligenceResults)
+                result.add(term)
             } else {
                 blacklistedTerms.add(term)
             }
         }
-        browsers.each { it.quit() }
-
-        final LinkedHashMap analysis = ViralMarketIntelligenceAnalyzer.analyzeProducts(marketIntelligenceResults)
 
         logBlacklistedTerms(blacklistedTerms)
-
-        return analysis
+        return result
     }
 
     static void logBlacklistedTerms(final List<String> blacklistedTerms) {
@@ -112,5 +131,10 @@ class MarketIntelligenceMain {
         } catch (FileNotFoundException e) {
             return Arrays.asList(termOrFilename)
         }
+    }
+
+    private static String getCsvFilePath() {
+        final String now = new Date().format("yyyy-MM-dd___HH-mm-ss", TimeZone.getTimeZone('America/Los_Angeles'))
+        return "./market_intelligence_result_" + now + ".csv"
     }
 }

@@ -18,18 +18,15 @@
  * Dependencies need to be declared here, as well as in the POM file.
  * By doing so, you will be able to execute this file via either bash or IntelliJ.
  */
-
-
-import com.viral.automation.analysis.ViralMarketIntelligenceWriter
-import com.viral.automation.main.Log
 @Grapes([
         @Grab("org.gebish:geb-core:2.3.1"),
         @Grab("org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"),
         @Grab("org.seleniumhq.selenium:selenium-support:3.14.0"),
         @Grab("org.apache.commons:commons-csv:1.6")
 ])
+import com.viral.automation.main.Log
 
-import com.viral.automation.main.MarketIntelligenceMain
+import static com.viral.automation.main.MarketIntelligenceMain.executeMarketIntelligence
 
 class MarketIntelligence {
 
@@ -43,10 +40,7 @@ class MarketIntelligence {
         final String PASSWORD = credentials[1]
         final String SEARCH_TERM = args[0]
 
-        final LinkedHashMap analyses = MarketIntelligenceMain.executeMarketIntelligence(USERNAME, PASSWORD, SEARCH_TERM)
-        final String fileName = ViralMarketIntelligenceWriter.writeAnalysisIntoCsv(getCsvFileName(), analyses)
-
-        Log.success("Market Intelligence executed successfully! Results @ ${fileName}")
+        executeMarketIntelligence(USERNAME, PASSWORD, SEARCH_TERM)
     }
 
     private static exitIfInsufficientArguments(String... args) {
@@ -64,10 +58,5 @@ class MarketIntelligence {
 
     private static void clearScreen() {
         for (int i = 0; i < 50; ++i) System.out.println();
-    }
-
-    private static String getCsvFileName() {
-        final String now = new Date().format("yyyy_MM_dd-HH_mm_ss", TimeZone.getTimeZone('America/Los_Angeles'))
-        return "./market_intelligence_result_" + now + ".csv"
     }
 }

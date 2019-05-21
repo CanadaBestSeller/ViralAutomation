@@ -23,8 +23,8 @@ class StandardViewModule extends Module {
         Log.info("Opened Standard View.")
     }
 
-    def transcribe(marketIntelligenceResult) {
-        Thread.sleep(20_000)  // wait an extra 20 seconds for BSR information to populate
+    def transcribe(marketIntelligenceResult, waitTimeInMilliseconds) {
+        Thread.sleep(waitTimeInMilliseconds)
         marketIntelligenceResult['raw_standard_top10BsrList'] = productListings.getAt(0..9)*.bsr
         marketIntelligenceResult['raw_standard_page1BsrList'] = productListings*.bsr
         marketIntelligenceResult['raw_standard_page1BrandList'] = productListings*.brand

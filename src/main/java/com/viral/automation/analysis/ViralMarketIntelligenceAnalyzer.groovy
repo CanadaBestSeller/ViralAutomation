@@ -33,15 +33,7 @@ class ViralMarketIntelligenceAnalyzer {
      *     }, ...
      * }
      */
-    static analyzeProducts(productToMarketIntelligenceMap) {
-        def productAnalysis = [:]
-        productToMarketIntelligenceMap.each {
-            product, productMarketIntelligence -> productAnalysis[product] = analyzeProduct(product, productMarketIntelligence)
-        }
-        return productAnalysis
-    }
-
-    private static analyzeProduct(productName, rawProductInfo) {
+    static analyzeProduct(productName, rawProductInfo) {
 
         LinkedHashMap productAnalysis = [:]
 
@@ -89,7 +81,7 @@ class ViralMarketIntelligenceAnalyzer {
         productAnalysis['analysis_isSeasonal'] = rawProductInfo['raw_analysis_tipContent'].contains("season")
         productAnalysis['analysis_isTrend'] = rawProductInfo['raw_analysis_tipContent'].contains("trend")
 
-        Log.info("\n" + productName.toUpperCase() + ":\n" + prettyPrint(toJson(productAnalysis)))
+        Log.info("\n\n" + productName.toUpperCase() + ":\n" + prettyPrint(toJson(productAnalysis)) + "\n")
 
         return ViralMarketIntelligenceProductScorer.addFinalScoreAndReasons(productAnalysis, productName)
     }
