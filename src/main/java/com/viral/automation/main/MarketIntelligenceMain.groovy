@@ -3,40 +3,10 @@ package com.viral.automation.main
 import com.viral.automation.analysis.ViralMarketIntelligenceWriter
 import com.viral.automation.authentication.ViralLogin
 import com.viral.automation.marketintelligence.ViralMarketIntelligence
+import com.viral.automation.marketintelligence.modules.Blacklist
 import geb.Browser
 
 class MarketIntelligenceMain {
-
-    private static final BLACKLISTED_TERMS = // case-insensitive
-            [
-               "Aquaphor", "Alani Nu", "Adidas", "Amoxicillin", "Avengers", "Allegra", "American Ninja Warrior", "Alvababy", "Amika",
-               "biore", "Bey Blade", "Beyblade", "Bablades", "Ben 10", "Bayblades", "Blade Blade",
-               "charizard", "channel", "Coq10", "Cialis", "Clinique", "Calvin Klein", "Clorox", "Coast Flashlight", "Cottonelle", "Crest ",
-               "Disney", "Dixie", "Dreft", "Dove shampoo",
-               // e
-               "Funko", "Fortnite", "Fabreeze",
-               "Gladiator Garageworks", "Game Of Thrones", "Giorgio", "Glade", "Gopro", "Garmin",
-               "Huggies", "Hello toothpaste", "Huk Shirt", "hulk",
-               "itzy ritzy", "Invicta", "Iron Man", "Iphone", "Imodium", "It's A 10",
-               "johnny b", "Jolyn", "j6", "j8", "Juul", "Jag Jeans",
-               "Kyocera", "Kenmore", "Kiehls", "Kleenex",
-               "Lexus", "Lenox", "Lego", "Lilly Pulitzer", "Lily Pulitzer",
-               "Marvel", "Macbook", "Monster Jam", "Matrix Shampoo",
-               "nike", "nintendo", "neutrogena", "Nyquil", "Nitraflex", "Nutrisystem",
-               "Omeprazole", "Orijen", "One Touch Verio", "OneTouch Verio",
-               "ps3", "ps4", "Playtex", "Pqq", "Puffs", "Pepcid", "Pampers", "Pledge", "Pokemon", "Petzl", "Pittsburgh Pirates", "Pure Romance", "Purex",
-               "Que Water", "Quick Fix Synthetic Urine",
-               "Reuzel", "ryan toy", "ryans toy", "Rebook", "Reebok", "Rhino Pills",
-               "samsung", "Sebastian Shaper", "Redken", "Snorerx", "Spiderman", "Seventh Generation Toilet Paper", "Steve Madden", "silent mind",
-               "Tampax", "Torino Pro", "tide ", "Taylormade", "Thompson Tee", "The Kind Pen",
-               "Ubiquinol", "Under Armour", "UnderArmour",
-               "Vera Bradley",
-               "Warhammer", "Wolverine", "Woodland", "Windex",
-               "xbox",
-               // y
-               "Zyrtec", "Zantac",
-               "303 fabric guard"
-            ]
 
     // This is an entry point for IntelliJ target only
     static void main(String... args) {
@@ -113,7 +83,11 @@ class MarketIntelligenceMain {
             return false
         }
 
-        if (BLACKLISTED_TERMS.any { term.toUpperCase().contains(it.toUpperCase()) }) {
+        if (Blacklist.BLACKLISTED_TERMS.any { term.toUpperCase().contains(it.toUpperCase()) }) {
+            return false
+        }
+
+        if (Blacklist.ALREADY_ANALYZED_PRODUCTS.any { (term.toUpperCase().trim() == it.toUpperCase().trim()) }) {
             return false
         }
 
