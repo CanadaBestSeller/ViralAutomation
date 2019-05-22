@@ -35,12 +35,16 @@ class MarketIntelligenceMain {
             def result = [:]
             if (i == 0) {
                 browsers.add ViralLogin.launch(email, password)
-                browsers.add ViralMarketIntelligence.searchAndRecord(validatedTerms[i], result, isTestMode)
+                final Browser marketIntelligenceBrowser = ViralMarketIntelligence.searchAndRecord(validatedTerms[i], result, isTestMode)
+                browsers.add(marketIntelligenceBrowser)
                 ViralMarketIntelligenceWriter.createFileAndWriteHeadersIntoCsv(csvFilePath, result)
                 ViralMarketIntelligenceWriter.appendAnalysisIntoCsv(csvFilePath, result)
+                marketIntelligenceBrowser.close()
             } else {
-                browsers.add ViralMarketIntelligence.searchAndRecord(validatedTerms[i], result, isTestMode)
+                final Browser marketIntelligenceBrowser = ViralMarketIntelligence.searchAndRecord(validatedTerms[i], result, isTestMode)
+                browsers.add(marketIntelligenceBrowser)
                 ViralMarketIntelligenceWriter.appendAnalysisIntoCsv(csvFilePath, result)
+                marketIntelligenceBrowser.close()
             }
             Log.success("${validatedTerms[i]} Market Intelligence results added to ${csvFilePath}")
         }
