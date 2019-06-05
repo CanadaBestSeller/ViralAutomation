@@ -95,7 +95,7 @@ class ViralMarketIntelligenceAnalyzer {
             return null
         }
 
-        return input.replace(',', '').replace('$', '').toDouble()
+        return input.replace(',', '').replace('$', '').replace('<', '').toDouble()
     }
 
     private static double maxFrequency(List<String> inputList) {
