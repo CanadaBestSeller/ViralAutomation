@@ -5,5 +5,5 @@ target
 *.credentials
 *.result
 *.csv
-*.Blacklist.groovy
+*Blacklist.groovy
 
