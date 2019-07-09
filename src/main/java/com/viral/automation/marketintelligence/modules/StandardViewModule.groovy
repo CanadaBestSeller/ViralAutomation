@@ -39,25 +39,26 @@ class Product extends Module {
 
         isOutlier { !cell(0).find("label.el-checkbox.is-checked").any() }
         rank { cell(1).$("div.cell.el-tooltip").text() }
-        brand { cell(2).$("div.cell.el-tooltip").text() }
-        title { cell(3).$("div.cell.el-tooltip").text() }
-        category { cell(4).$("div.cell.el-tooltip").text() }
-        bsr { cell(5).$("div.cell.el-tooltip").text() }
-        bsrTrendPicture { cell(6).$("div.cell.el-tooltip").text() }
-        monthlyRevenue { cell(7).$("div.cell.el-tooltip").text() }
-        price { cell(8).$("div.cell.el-tooltip").text() }
-        unitMargin { cell(9).$("div.cell.el-tooltip").text() }
-        monthlySales { cell(10).$("div.cell.el-tooltip").text() }
-        reviewQuantity { cell(11).$("div.cell.el-tooltip").text() }
-        reviewRate { cell(12).$("div.cell.el-tooltip").text() }
-        averageRating { cell(13).$("div.cell.el-tooltip").text() }
-        soldBy { cell(14).$("div.cell.el-tooltip").text() }
-        salesToReviewsRatio { cell(15).$("div.cell.el-tooltip").text() }
-        dateListed { cell(16).$("div.cell.el-tooltip").text() }
-        netProfit { cell(17).$("div.cell.el-tooltip").text() }
-        last12mSales { cell(18).$("div.cell.el-tooltip").text() }
-        last12mRevenue { cell(19).$("div.cell.el-tooltip").text() }
-        next12mSales { cell(20).$("div.cell.el-tooltip").text() }
-        next12mRevenue { cell(21).$("div.cell.el-tooltip").text() }
+        trackButtons { cell(2).$("div.cell.el-tooltip").text() }
+        brand { cell(3).$("div.cell.el-tooltip").text() }
+        title { cell(4).$("div.cell.el-tooltip").text() }
+        category { cell(5).$("div.cell.el-tooltip").text() }
+        bsr { cell(6).$("div.cell.el-tooltip").text() }
+        bsrTrendPicture { cell(7).$("div.cell.el-tooltip").text() }
+        monthlyRevenue { cell(8).$("div.cell.el-tooltip").text() }
+        price { cell(9).$("div.cell.el-tooltip").text() }
+        unitMargin { cell(10).$("div.cell.el-tooltip").text() }
+        monthlySales { cell(11).$("div.cell.el-tooltip").text() }
+        reviewQuantity { cell(12).$("div.cell.el-tooltip").text() }
+        reviewRate { cell(13).$("div.cell.el-tooltip").text() }
+        averageRating { cell(14).$("div.cell.el-tooltip").text() }
+        soldBy { cell(15).$("div.cell.el-tooltip").text() }
+        salesToReviewsRatio { cell(16).$("div.cell.el-tooltip").text() }
+        dateListed { cell(17).$("div.cell.el-tooltip").text() }
+        netProfit { cell(18).$("div.cell.el-tooltip").text() }
+        last12mSales { cell(19).$("div.cell.el-tooltip").text() }
+        last12mRevenue { cell(20).$("div.cell.el-tooltip").text() }
+        next12mSales { cell(21).$("div.cell.el-tooltip").text() }
+        next12mRevenue { cell(22).$("div.cell.el-tooltip").text() }
     }
 }
