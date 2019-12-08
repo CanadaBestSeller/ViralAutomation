@@ -81,6 +81,9 @@ class ViralMarketIntelligenceAnalyzer {
         productAnalysis['analysis_isSeasonal'] = rawProductInfo['raw_analysis_tipContent'].contains("season")
         productAnalysis['analysis_isTrend'] = rawProductInfo['raw_analysis_tipContent'].contains("trend")
 
+        productAnalysis['analysis_productSummedVolume'] = calculateSummedVolume(rawProductInfo)
+        productAnalysis['analysis_isTrend'] = rawProductInfo['raw_analysis_tipContent'].contains("trend")
+
         Log.info("\n\n" + productName.toUpperCase() + ":\n" + prettyPrint(toJson(productAnalysis)) + "\n")
 
         return ViralMarketIntelligenceProductScorer.addFinalScoreAndReasons(productAnalysis, productName)
@@ -95,7 +98,7 @@ class ViralMarketIntelligenceAnalyzer {
             return null
         }
 
-        return input.replace(',', '').replace('$', '').replace('<', '').toDouble()
+        return input.replace(',', '').replace('$', '').replace('<', '').toDouble().round(2)
     }
 
     private static double maxFrequency(List<String> inputList) {
@@ -115,4 +118,15 @@ class ViralMarketIntelligenceAnalyzer {
         return Collections.max(uniqueOccurrenceList)
     }
 
+    private static double calculateSummedVolume(rawProductInfo) {
+
+        final Double w = Double.parseDouble(rawProductInfo['raw_calc_widthInInches'])
+        final Double h = Double.parseDouble(rawProductInfo['raw_calc_heightInInches'])
+        final Double l = Double.parseDouble(rawProductInfo['raw_calc_lengthInInches'])
+
+        final Double totalVolume = w + h + l  // Using addition here to make calculation easier
+        Log.debug("Total summed volume of product (w + h + l) is ${totalVolume}")
+
+        return totalVolume
+    }
 }

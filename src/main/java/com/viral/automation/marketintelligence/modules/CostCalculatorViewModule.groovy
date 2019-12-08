@@ -9,6 +9,9 @@ class CostCalculatorViewModule extends Module {
         costCalculatorViewTab { $("div#tab-costCalculator") }
 
         totalAveragePrice { $("p.el-tooltip.item.product-price", 0) }
+
+        dimensions { $("ul.product-specs", 0) }  // Eg) Unit Weight: 1 lb \n Dimensions: 10 X 2 X 14 in
+
         profitPerUnit { $("p.profit", 0) }
         referralFeeCost { $("div.fee-amount", 0) }
         amazonFeesCost { $("div.fee-amount", 1) }
@@ -38,5 +41,12 @@ class CostCalculatorViewModule extends Module {
         marketIntelligenceResult['raw_calc_landedUnitCost'] = landedUnitCost.text()
         marketIntelligenceResult['raw_calc_amazonFeesCost'] = amazonFeesCost.text()
         marketIntelligenceResult['raw_calc_referralFeeCost'] = referralFeeCost.text()
+
+        def explodedDimensions = dimensions.text().split()
+
+        marketIntelligenceResult['raw_calc_totalAverageWeightInPounds'] = explodedDimensions[2]
+        marketIntelligenceResult['raw_calc_widthInInches'] = explodedDimensions[5]
+        marketIntelligenceResult['raw_calc_heightInInches'] = explodedDimensions[7]
+        marketIntelligenceResult['raw_calc_lengthInInches'] = explodedDimensions[9]
     }
 }
