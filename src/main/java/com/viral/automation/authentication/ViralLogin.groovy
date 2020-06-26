@@ -13,7 +13,7 @@ class ViralLogin {
         def window = ChromeBrowserProvider.get()
         window.drive {
             to ViralLoginPage
-            waitFor { $("button.signIn__button").isDisplayed() }
+            waitFor { $("button.sign-in__button").isDisplayed() }
             Thread.sleep(3_000)
 
             try {
@@ -24,10 +24,10 @@ class ViralLogin {
                 Log.debug(t.toString())
             }
 
-            $("input.signIn__input.null", 0).value(email)
-            $("input.signIn__input.null", 1).value(password)
+            $("input.sign-in__input", 0).value(email)
+            $("input.sign-in__input", 1).value(password)
 
-            waitFor(30, message:"Clicking login button...") { $("button.signIn__button", 0).click() }
+            waitFor(30, message:"Clicking login button...") { $("button.sign-in__button", 0).click() }
         }
 
         Log.success "Logged in!"
