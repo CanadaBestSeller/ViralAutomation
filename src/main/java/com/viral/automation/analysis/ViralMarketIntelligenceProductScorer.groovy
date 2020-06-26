@@ -25,7 +25,7 @@ class ViralMarketIntelligenceProductScorer {
         finalScore += evaluateCondition(o, "Has Budget (${BUDGET_IN_DOLLARS})", BUDGET_IN_DOLLARS > i['analysis_2.5xInventoryCost'], 1, 0)
         
         finalScore += evaluateCondition(o, 'Top 10 Has 3+ Listings < 10K BSR', i['analysis_top10Sub10000BsrCount'] >= 3, 1, 0)
-        finalScore += evaluateCondition(o, 'Exact Search 3K+', i['analysis_exactSearches'] >= 3000, 1, 0)
+        finalScore += evaluateCondition(o, 'Exact Search 2K+', i['analysis_exactSearches'] >= 2000, 1, 0)
         finalScore += evaluateCondition(o, 'Top 10 Avg Selling 300+/month', i['analysis_top10AverageMonthlySales'] >= 300, 1, 0)
 
         finalScore += evaluateCondition(o, 'Unit Margin $5+', i['analysis_unitMargin'] >= 5, 1, 0)
@@ -35,16 +35,16 @@ class ViralMarketIntelligenceProductScorer {
         finalScore += evaluateCondition(o, 'Most (75%) on page 1 - Profit $1500+', i['analysis_25PercentileMonthlyProfit'] >= 1500, 1, 0)
         finalScore += evaluateCondition(o, 'Half on page 1 - Profit $3000+', i['analysis_medianMonthlyProfit'] >= 3000, 1, 0)
 
-        finalScore += evaluateCondition(o, 'Top 10 Reviews 300-', i['analysis_top10AverageAverageReviewCount'] <= 300, 1, 0)
         finalScore += evaluateCondition(o, 'Dominating Brand Listings 3-', i['analysis_dominatingBrandListingCount'] <= 3, 1, 0)
         finalScore += evaluateCondition(o, 'Page 1 AMZN Listings 3-', i['analysis_amznListingCount'] <= 2, 1, 0)
 
-        finalScore += evaluateCondition(o, 'Non Seasonal / Non Trendy', !i['analysis_isSeasonal'] , 1, 0)
+        finalScore += evaluateCondition(o, 'Non Seasonal & Non Trendy', !i['analysis_isSeasonal'] , 1, 0)
 
         finalScore += evaluateCondition(o, 'Compulsive Price Range - over $15', i['analysis_averagePrice'] >= 15, 0.5, 0)
         finalScore += evaluateCondition(o, 'Compulsive Price Range - under $50', i['analysis_averagePrice'] <= 50, 0.5, 0)
 
-        finalScore += applyPoints(o, 'The smallness of the product (max 3 points)', calculateSummedVolumePoints(i['analysis_productSummedVolume']))
+        finalScore += applyPoints(o, 'The smallness of the product (max 3 points)', calculatePointsForSummedVolume(i['analysis_productSummedVolume']))
+        finalScore += applyPoints(o, 'Unsaturated market? (max 3 points): Top 10 Average Review Volume = ' + i['analysis_top10AverageAverageReviewCount'], calculatePointsForTop10AverageReviewsVolume(i['analysis_top10AverageAverageReviewCount']))
 
         o['Score'] = finalScore
 
@@ -119,7 +119,7 @@ class ViralMarketIntelligenceProductScorer {
      * @param rawProductInfo
      * @return
      */
-    private static double calculateSummedVolumePoints(final Double summedVolume) {
+    private static double calculatePointsForSummedVolume(final Double summedVolume) {
 
         final Double LARGEST_STANDARD_SIZE = 40d
 
@@ -130,6 +130,33 @@ class ViralMarketIntelligenceProductScorer {
             result =  (LARGEST_STANDARD_SIZE - summedVolume) / LARGEST_STANDARD_SIZE * 3
         }
 
+        return result.round(2)
+    }
+
+    /**
+     * TODO CALIBRATE
+     * Calculate a score based on the top 10 average reviews volume. The lower the better.
+     * Max points is 3
+     * @param rawProductInfo
+     * @return
+     */
+    static double calculatePointsForTop10AverageReviewsVolume(final Double top10AverageReviewsVolume) {
+
+        final Double MAX_SCORE = 3d
+
+        final Double MINIMUM_ACCEPTABLE_VOLUME = 50d
+        final Double MAXIMUM_ACCEPTABLE_VOLUME = 500d
+        final Double RANGE = MAXIMUM_ACCEPTABLE_VOLUME - MINIMUM_ACCEPTABLE_VOLUME
+
+        if (top10AverageReviewsVolume < MINIMUM_ACCEPTABLE_VOLUME ||
+                top10AverageReviewsVolume > MAXIMUM_ACCEPTABLE_VOLUME) {
+            return 0d
+        }
+
+        Double adjustedVolume = top10AverageReviewsVolume - MINIMUM_ACCEPTABLE_VOLUME  // e.g. a volume of 60 has an adjusted volume of 10
+        Double invertedRange = RANGE - adjustedVolume // e.g. adjusted volume of 10 is really good, so it's actually 440
+
+        Double result = invertedRange / RANGE * MAX_SCORE
         return result.round(2)
     }
 }

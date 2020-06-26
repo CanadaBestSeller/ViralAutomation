@@ -19,6 +19,7 @@ class MarketIntelligenceMain {
    }
 
     static LinkedHashMap executeMarketIntelligence(final String email, final String password, final String termOrFilename) {
+        // This ingress is from bash. Therefore isTestMode should always be false
         return executeMarketIntelligence(email, password, termOrFilename, false)
     }
 
